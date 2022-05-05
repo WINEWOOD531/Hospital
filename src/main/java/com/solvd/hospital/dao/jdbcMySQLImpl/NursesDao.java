@@ -23,7 +23,7 @@ public class NursesDao implements INursesDao {
     }
 
     @Override
-    public void getNurseById() {
-
+    public INursesDao getNurseById() {
+        return this;
     }
 }

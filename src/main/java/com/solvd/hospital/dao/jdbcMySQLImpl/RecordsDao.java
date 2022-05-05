@@ -24,7 +24,7 @@ public class RecordsDao implements IRecordsDao {
     }
 
     @Override
-    public void getRecordsByPatientId() {
-
+    public IRecordsDao getRecordsByPatientId() {
+        return this;
     }
 }

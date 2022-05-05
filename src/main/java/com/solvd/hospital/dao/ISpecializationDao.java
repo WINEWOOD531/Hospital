@@ -8,5 +8,5 @@ public interface ISpecializationDao {
 
     void deleteSpecialization();
 
-    void getSpecializationById();
+    ISpecializationDao getSpecializationById();
 }

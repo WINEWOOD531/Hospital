@@ -8,5 +8,5 @@ public interface ITakesDao {
 
     void deleteTakes();
 
-    void getTakes();
+    ITakesDao getTakes();
 }

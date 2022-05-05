@@ -8,5 +8,5 @@ public interface IExpertInDao {
 
     void deleteExpertIn();
 
-    void getExpertIn();
+    IExpertInDao getExpertIn();
 }

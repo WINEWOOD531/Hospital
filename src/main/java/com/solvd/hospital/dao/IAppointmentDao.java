@@ -8,5 +8,5 @@ public interface IAppointmentDao {
 
     void deleteAppointmentById();
 
-    void getAppointmentById();
+    IAppointmentDao getAppointmentById();
 }

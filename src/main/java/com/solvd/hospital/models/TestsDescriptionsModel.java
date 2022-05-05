@@ -1,26 +1,23 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.PatientDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.TestsDao;
-
 public class TestsDescriptionsModel {
 
     private int id;
     private String testDate;
     private String testAnalysis;
-    private TestsDao testsDao;
-    private PatientDao patientDao;
+    private TestsModel tests;
+    private PatientModel patient;
 
     public TestsDescriptionsModel() {
     }
 
     public TestsDescriptionsModel(int id, String testDate, String testAnalysis,
-                                  TestsDao testsDao, PatientDao patientDao) {
+                                  TestsModel tests, PatientModel patient) {
         this.id = id;
         this.testDate = testDate;
         this.testAnalysis = testAnalysis;
-        this.testsDao = testsDao;
-        this.patientDao = patientDao;
+        this.tests = tests;
+        this.patient = patient;
     }
 
     public void setId(int id) {
@@ -35,12 +32,12 @@ public class TestsDescriptionsModel {
         this.testAnalysis = testAnalysis;
     }
 
-    public void setTestsDao(TestsDao testsDao) {
-        this.testsDao = testsDao;
+    public void setTests(TestsModel tests) {
+        this.tests = tests;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
+    public void setPatient(PatientModel patient) {
+        this.patient = patient;
     }
 
     public int getId() {
@@ -55,11 +52,11 @@ public class TestsDescriptionsModel {
         return testAnalysis;
     }
 
-    public TestsDao getTestsDao() {
-        return testsDao;
+    public TestsModel getTests() {
+        return tests;
     }
 
-    public PatientDao getPatientDao() {
-        return patientDao;
+    public PatientModel getPatient() {
+        return patient;
     }
 }

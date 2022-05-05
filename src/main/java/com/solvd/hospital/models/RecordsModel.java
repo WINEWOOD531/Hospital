@@ -1,20 +1,18 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.PatientDao;
-
 public class RecordsModel {
 
     private int id;
     private String recordAnalysis;
-    private PatientDao patientDao;
+    private PatientModel patient;
 
     public RecordsModel() {
     }
 
-    public RecordsModel(int id, String recordAnalysis, PatientDao patientDao) {
+    public RecordsModel(int id, String recordAnalysis, PatientModel patient) {
         this.id = id;
         this.recordAnalysis = recordAnalysis;
-        this.patientDao = patientDao;
+        this.patient = patient;
     }
 
     public void setId(int id) {
@@ -25,8 +23,8 @@ public class RecordsModel {
         this.recordAnalysis = recordAnalysis;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
+    public void setPatient(PatientModel patient) {
+        this.patient = patient;
     }
 
     public int getId() {
@@ -37,7 +35,7 @@ public class RecordsModel {
         return recordAnalysis;
     }
 
-    public PatientDao getPatientDao() {
-        return patientDao;
+    public PatientModel getPatient() {
+        return patient;
     }
 }

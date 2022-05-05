@@ -24,7 +24,7 @@ public class TakesDao implements ITakesDao {
     }
 
     @Override
-    public void getTakes() {
-
+    public ITakesDao getTakes() {
+        return this;
     }
 }

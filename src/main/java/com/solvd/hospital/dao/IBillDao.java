@@ -8,5 +8,5 @@ public interface IBillDao {
 
     void deleteBillByPatientId();
 
-    void getBillByPatientId();
+    IBillDao getBillByPatientId();
 }

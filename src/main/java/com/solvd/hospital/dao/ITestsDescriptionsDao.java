@@ -8,5 +8,5 @@ public interface ITestsDescriptionsDao {
 
     void deleteTestsDescriptions();
 
-    void getTestsDescriptions();
+    ITestsDescriptionsDao getTestsDescriptions();
 }

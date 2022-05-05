@@ -8,5 +8,5 @@ public interface ITestsDao {
 
     void deleteTests();
 
-    void getTestsById();
+    ITestsDao getTestsById();
 }

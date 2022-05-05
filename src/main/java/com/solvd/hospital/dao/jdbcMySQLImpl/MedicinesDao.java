@@ -24,7 +24,7 @@ public class MedicinesDao implements IMedicinesDao {
     }
 
     @Override
-    public void getMedicines() {
-
+    public IMedicinesDao getMedicines() {
+        return this;
     }
 }

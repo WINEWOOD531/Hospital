@@ -1,24 +1,22 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.PersonDao;
-
 public class PatientModel {
 
     private int id;
     private int age;
     private String bloodGroup;
     private char sex;
-    private PersonDao personDao;
+    private PersonModel person;
 
     public PatientModel() {
     }
 
-    public PatientModel(int id, int age, String bloodGroup, char sex, PersonDao personDao) {
+    public PatientModel(int id, int age, String bloodGroup, char sex, PersonModel person) {
         this.id = id;
         this.age = age;
         this.bloodGroup = bloodGroup;
         this.sex = sex;
-        this.personDao = personDao;
+        this.person = person;
     }
 
     public void setId(int id) {
@@ -37,8 +35,8 @@ public class PatientModel {
         this.sex = sex;
     }
 
-    public void setPersonDao(PersonDao personDao) {
-        this.personDao = personDao;
+    public void setPerson(PersonModel person) {
+        this.person = person;
     }
 
     public int getId() {
@@ -57,7 +55,7 @@ public class PatientModel {
         return sex;
     }
 
-    public PersonDao getPersonDao() {
-        return personDao;
+    public PersonModel getPerson() {
+        return person;
     }
 }

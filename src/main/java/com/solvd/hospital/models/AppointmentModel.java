@@ -1,23 +1,20 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.DoctorsDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.PatientDao;
-
 public class AppointmentModel {
 
     private int id;
     private String appointmentDate;
-    private DoctorsDao doctorsDao;
-    private PatientDao patientDao;
+    private DoctorsModel doctors;
+    private PatientModel patient;
 
     public AppointmentModel() {
     }
 
-    public AppointmentModel(int id, String appointmentDate, DoctorsDao doctorsDao, PatientDao patientDao) {
+    public AppointmentModel(int id, String appointmentDate, DoctorsModel doctors, PatientModel patient) {
         this.id = id;
         this.appointmentDate = appointmentDate;
-        this.doctorsDao = doctorsDao;
-        this.patientDao = patientDao;
+        this.doctors = doctors;
+        this.patient = patient;
     }
 
     public void setId(int id) {
@@ -28,12 +25,12 @@ public class AppointmentModel {
         this.appointmentDate = appointmentDate;
     }
 
-    public void setDoctorsDao(DoctorsDao doctorsDao) {
-        this.doctorsDao = doctorsDao;
+    public void setDoctors(DoctorsModel doctors) {
+        this.doctors = doctors;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
+    public void setPatient(PatientModel patient) {
+        this.patient = patient;
     }
 
     public int getId() {
@@ -44,11 +41,11 @@ public class AppointmentModel {
         return appointmentDate;
     }
 
-    public DoctorsDao getDoctorsDao() {
-        return doctorsDao;
+    public DoctorsModel getDoctors() {
+        return doctors;
     }
 
-    public PatientDao getPatientDao() {
-        return patientDao;
+    public PatientModel getPatient() {
+        return patient;
     }
 }

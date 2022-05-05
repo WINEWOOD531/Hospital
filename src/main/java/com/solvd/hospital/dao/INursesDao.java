@@ -8,5 +8,5 @@ public interface INursesDao {
 
     void deleteNurseById();
 
-    void getNurseById();
+    INursesDao getNurseById();
 }

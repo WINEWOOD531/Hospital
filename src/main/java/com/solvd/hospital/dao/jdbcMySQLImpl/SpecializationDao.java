@@ -24,7 +24,7 @@ public class SpecializationDao implements ISpecializationDao {
     }
 
     @Override
-    public void getSpecializationById() {
-
+    public ISpecializationDao getSpecializationById() {
+        return this;
     }
 }

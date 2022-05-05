@@ -8,5 +8,5 @@ public interface IRoomsDao {
 
     void deleteRoom();
 
-    void getRoomByPatientId();
+    IRoomsDao getRoomByPatientId();
 }

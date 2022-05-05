@@ -7,16 +7,16 @@ public class BillModel {
     private int id;
     private Double sum;
     private String paymentDate;
-    private PatientDao patientDao;
+    private PatientModel patient;
 
     public BillModel() {
     }
 
-    public BillModel(int id, Double sum, String paymentDate, PatientDao patientDao) {
+    public BillModel(int id, Double sum, String paymentDate, PatientModel patient) {
         this.id = id;
         this.sum = sum;
         this.paymentDate = paymentDate;
-        this.patientDao = patientDao;
+        this.patient = patient;
     }
 
     public void setId(int id) {
@@ -31,8 +31,8 @@ public class BillModel {
         this.paymentDate = paymentDate;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
+    public void setPatient(PatientModel patient) {
+        this.patient = patient;
     }
 
     public int getId() {
@@ -47,7 +47,7 @@ public class BillModel {
         return paymentDate;
     }
 
-    public PatientDao getPatientDao() {
-        return patientDao;
+    public PatientModel getPatient() {
+        return patient;
     }
 }

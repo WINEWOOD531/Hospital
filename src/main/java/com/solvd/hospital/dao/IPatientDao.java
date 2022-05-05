@@ -8,5 +8,5 @@ public interface IPatientDao {
 
     void deletePatientById();
 
-    void getPatientById();
+    IPatientDao getPatientById();
 }

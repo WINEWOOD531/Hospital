@@ -8,5 +8,5 @@ public interface IPersonDao {
 
     void deletePersonById();
 
-    void getPersonById();
+    IPersonDao getPersonById();
 }

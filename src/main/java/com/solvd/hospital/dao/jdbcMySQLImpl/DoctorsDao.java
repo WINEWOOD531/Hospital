@@ -24,7 +24,7 @@ public class DoctorsDao implements IDoctorsDao {
     }
 
     @Override
-    public void getDoctorById() {
-
+    public IDoctorsDao getDoctorById() {
+        return this;
     }
 }

@@ -1,12 +1,12 @@
 package com.solvd.hospital.dao.jdbcMySQLImpl;
 
-import com.solvd.hospital.dao.INurseAllocation;
+import com.solvd.hospital.dao.INurseAllocationDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class NurseAllocation implements INurseAllocation {
+public class NurseAllocationDao implements INurseAllocationDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(NurseAllocation.class);
+    private static final Logger LOGGER = LogManager.getLogger(NurseAllocationDao.class);
 
     @Override
     public void createNurses() {
@@ -24,7 +24,7 @@ public class NurseAllocation implements INurseAllocation {
     }
 
     @Override
-    public void getNurseAllocation() {
-
+    public INurseAllocationDao getNurseAllocation() {
+        return this;
     }
 }

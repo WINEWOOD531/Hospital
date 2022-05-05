@@ -1,19 +1,17 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.PersonDao;
-
 public class NursesModel {
 
     private int id;
-    private PersonDao personDao;
+    private PersonModel person;
     private int workExperience;
 
     public NursesModel() {
     }
 
-    public NursesModel(int id, PersonDao personDao, int workExperience) {
+    public NursesModel(int id, PersonModel person, int workExperience) {
         this.id = id;
-        this.personDao = personDao;
+        this.person = person;
         this.workExperience = workExperience;
     }
 
@@ -21,8 +19,8 @@ public class NursesModel {
         this.id = id;
     }
 
-    public void setPersonDao(PersonDao personDao) {
-        this.personDao = personDao;
+    public void setPerson(PersonModel person) {
+        this.person = person;
     }
 
     public void setWorkExperience(int workExperience) {
@@ -33,8 +31,8 @@ public class NursesModel {
         return id;
     }
 
-    public PersonDao getPersonDao() {
-        return personDao;
+    public PersonModel getPerson() {
+        return person;
     }
 
     public int getWorkExperience() {

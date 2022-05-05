@@ -1,29 +1,24 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.AppointmentDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.ExpertInDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.NurseAllocation;
-import com.solvd.hospital.dao.jdbcMySQLImpl.PersonDao;
-
 import java.util.List;
 
 public class DoctorsModel {
 
     private int id;
     private String availableDate;
-    private PersonDao personDao;
-    private List<ExpertInDao> expertIn;
-    private List<AppointmentDao> appointment;
-    private List<NurseAllocation> nurseAllocations;
+    private PersonModel person;
+    private List<ExpertInModel> expertIn;
+    private List<AppointmentModel> appointment;
+    private List<NurseAllocationModel> nurseAllocations;
 
     public DoctorsModel() {
     }
 
-    public DoctorsModel(int id, String availableDate, PersonDao personDao, List<ExpertInDao> expertIn,
-                        List<AppointmentDao> appointment, List<NurseAllocation> nurseAllocations) {
+    public DoctorsModel(int id, String availableDate, PersonModel person, List<ExpertInModel> expertIn,
+                        List<AppointmentModel> appointment, List<NurseAllocationModel> nurseAllocations) {
         this.id = id;
         this.availableDate = availableDate;
-        this.personDao = personDao;
+        this.person = person;
         this.expertIn = expertIn;
         this.appointment = appointment;
         this.nurseAllocations = nurseAllocations;
@@ -37,19 +32,19 @@ public class DoctorsModel {
         this.availableDate = availableDate;
     }
 
-    public void setPersonDao(PersonDao personDao) {
-        this.personDao = personDao;
+    public void setPerson(PersonModel person) {
+        this.person = person;
     }
 
-    public void setExpertIn(List<ExpertInDao> expertIn) {
+    public void setExpertIn(List<ExpertInModel> expertIn) {
         this.expertIn = expertIn;
     }
 
-    public void setAppointment(List<AppointmentDao> appointment) {
+    public void setAppointment(List<AppointmentModel> appointment) {
         this.appointment = appointment;
     }
 
-    public void setNurseAllocations(List<NurseAllocation> nurseAllocations) {
+    public void setNurseAllocations(List<NurseAllocationModel> nurseAllocations) {
         this.nurseAllocations = nurseAllocations;
     }
 
@@ -61,19 +56,19 @@ public class DoctorsModel {
         return availableDate;
     }
 
-    public PersonDao getPersonDao() {
-        return personDao;
+    public PersonModel getPerson() {
+        return person;
     }
 
-    public List<ExpertInDao> getExpertIn() {
+    public List<ExpertInModel> getExpertIn() {
         return expertIn;
     }
 
-    public List<AppointmentDao> getAppointment() {
+    public List<AppointmentModel> getAppointment() {
         return appointment;
     }
 
-    public List<NurseAllocation> getNurseAllocations() {
+    public List<NurseAllocationModel> getNurseAllocations() {
         return nurseAllocations;
     }
 }

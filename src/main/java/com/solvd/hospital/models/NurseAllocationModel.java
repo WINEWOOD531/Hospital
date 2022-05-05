@@ -1,29 +1,25 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.DoctorsDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.NursesDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.PatientDao;
-
 public class NurseAllocationModel {
 
     private int id;
     private String dateIn;
     private String dateOut;
-    private NursesDao nursesDao;
-    private DoctorsDao doctorsDao;
-    private PatientDao patientDao;
+    private NursesModel nurses;
+    private DoctorsModel doctors;
+    private PatientModel patient;
 
     public NurseAllocationModel() {
     }
 
     public NurseAllocationModel(int id, String dateIn, String dateOut,
-                                NursesDao nursesDao, DoctorsDao doctorsDao, PatientDao patientDao) {
+                                NursesModel nurses, DoctorsModel doctors, PatientModel patient) {
         this.id = id;
         this.dateIn = dateIn;
         this.dateOut = dateOut;
-        this.nursesDao = nursesDao;
-        this.doctorsDao = doctorsDao;
-        this.patientDao = patientDao;
+        this.nurses = nurses;
+        this.doctors = doctors;
+        this.patient = patient;
     }
 
     public void setId(int id) {
@@ -38,16 +34,16 @@ public class NurseAllocationModel {
         this.dateOut = dateOut;
     }
 
-    public void setNursesDao(NursesDao nursesDao) {
-        this.nursesDao = nursesDao;
+    public void setNurses(NursesModel nurses) {
+        this.nurses = nurses;
     }
 
-    public void setDoctorsDao(DoctorsDao doctorsDao) {
-        this.doctorsDao = doctorsDao;
+    public void setDoctors(DoctorsModel doctors) {
+        this.doctors = doctors;
     }
 
-    public void setPatientDao(PatientDao patientDao) {
-        this.patientDao = patientDao;
+    public void setPatient(PatientModel patient) {
+        this.patient = patient;
     }
 
     public int getId() {
@@ -62,15 +58,15 @@ public class NurseAllocationModel {
         return dateOut;
     }
 
-    public NursesDao getNursesDao() {
-        return nursesDao;
+    public NursesModel getNurses() {
+        return nurses;
     }
 
-    public DoctorsDao getDoctorsDao() {
-        return doctorsDao;
+    public DoctorsModel getDoctors() {
+        return doctors;
     }
 
-    public PatientDao getPatientDao() {
-        return patientDao;
+    public PatientModel getPatient() {
+        return patient;
     }
 }

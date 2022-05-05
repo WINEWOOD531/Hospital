@@ -1,6 +1,6 @@
 package com.solvd.hospital.dao;
 
-public interface INurseAllocation {
+public interface INurseAllocationDao {
 
     void createNurses();
 
@@ -8,5 +8,5 @@ public interface INurseAllocation {
 
     void deleteNurses();
 
-    void getNurseAllocation();
+    INurseAllocationDao getNurseAllocation();
 }

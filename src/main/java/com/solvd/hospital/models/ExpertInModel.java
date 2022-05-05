@@ -1,43 +1,41 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.DoctorsDao;
-import com.solvd.hospital.dao.jdbcMySQLImpl.SpecializationDao;
-
 public class ExpertInModel {
 
     private int id;
-    private DoctorsDao doctorsDao;
-    private SpecializationDao specializationDao;
+    private DoctorsModel doctors;
+    private SpecializationModel specialization;
 
     public ExpertInModel() {
     }
 
-    public ExpertInModel(int id, SpecializationDao specializationDao) {
+    public ExpertInModel(int id, DoctorsModel doctors, SpecializationModel specialization) {
         this.id = id;
-        this.specializationDao = specializationDao;
+        this.doctors = doctors;
+        this.specialization = specialization;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setDoctorsDao(DoctorsDao doctorsDao) {
-        this.doctorsDao = doctorsDao;
+    public void setDoctors(DoctorsModel doctors) {
+        this.doctors = doctors;
     }
 
-    public void setSpecializationDao(SpecializationDao specializationDao) {
-        this.specializationDao = specializationDao;
+    public void setSpecialization(SpecializationModel specialization) {
+        this.specialization = specialization;
     }
 
     public int getId() {
         return id;
     }
 
-    public DoctorsDao getDoctorsDao() {
-        return doctorsDao;
+    public DoctorsModel getDoctors() {
+        return doctors;
     }
 
-    public SpecializationDao getSpecializationDao() {
-        return specializationDao;
+    public SpecializationModel getSpecialization() {
+        return specialization;
     }
 }

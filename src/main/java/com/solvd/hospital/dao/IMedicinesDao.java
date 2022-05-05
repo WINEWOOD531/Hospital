@@ -8,5 +8,5 @@ public interface IMedicinesDao {
 
     void deleteMedicines();
 
-    void getMedicines();
+    IMedicinesDao getMedicines();
 }

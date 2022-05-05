@@ -8,5 +8,5 @@ public interface IRecordsDao {
 
     void deleteRecords();
 
-    void getRecordsByPatientId();
+    IRecordsDao getRecordsByPatientId();
 }

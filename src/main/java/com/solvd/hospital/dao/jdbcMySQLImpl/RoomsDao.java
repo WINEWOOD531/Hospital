@@ -24,7 +24,7 @@ public class RoomsDao implements IRoomsDao {
     }
 
     @Override
-    public void getRoomByPatientId() {
-
+    public IRoomsDao getRoomByPatientId() {
+        return this;
     }
 }

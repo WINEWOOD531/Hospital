@@ -24,7 +24,7 @@ public class BillDao implements IBillDao {
     }
 
     @Override
-    public void getBillByPatientId() {
-
+    public IBillDao getBillByPatientId() {
+        return this;
     }
 }

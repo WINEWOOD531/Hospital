@@ -24,7 +24,7 @@ public class NurseAllocation implements INurseAllocation {
     }
 
     @Override
-    public void getNurseAllocation() {
-
+    public INurseAllocation getNurseAllocation() {
+        return this;
     }
 }

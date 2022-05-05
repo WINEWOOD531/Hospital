@@ -8,5 +8,5 @@ public interface INurseAllocation {
 
     void deleteNurses();
 
-    void getNurseAllocation();
+    INurseAllocation getNurseAllocation();
 }

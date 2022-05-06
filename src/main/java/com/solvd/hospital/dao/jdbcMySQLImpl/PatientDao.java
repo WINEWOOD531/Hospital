@@ -1,6 +1,7 @@
 package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IPatientDao;
+import com.solvd.hospital.models.PatientModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,22 +10,22 @@ public class PatientDao implements IPatientDao {
     private static final Logger LOGGER = LogManager.getLogger(PatientDao.class);
 
     @Override
-    public void createPatient() {
+    public void createPatient(PatientModel patient) {
 
     }
 
     @Override
-    public void updatePatientById() {
+    public void updatePatientById(int id) {
 
     }
 
     @Override
-    public void deletePatientById() {
+    public void deletePatientById(int id) {
 
     }
 
     @Override
-    public IPatientDao getPatientById() {
+    public IPatientDao getPatientById(int id) {
         return null;
     }
 }

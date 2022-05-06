@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.SpecializationModel;
+
 public interface ISpecializationDao {
 
-    void createSpecialization();
+    void createSpecialization(SpecializationModel specialization);
 
-    void updateSpecialization();
+    void updateSpecializationById(int id);
 
-    void deleteSpecialization();
+    void deleteSpecializationById(int id);
 
-    ISpecializationDao getSpecializationById();
+    ISpecializationDao getSpecializationById(int id);
 }

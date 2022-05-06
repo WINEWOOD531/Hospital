@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.MedicinesModel;
+
 public interface IMedicinesDao {
 
-    void createMedicines();
+    void createMedicines(MedicinesModel medicines);
 
-    void updateMedicines();
+    void updateMedicinesById(int id);
 
-    void deleteMedicines();
+    void deleteMedicinesById(int id);
 
-    IMedicinesDao getMedicines();
+    IMedicinesDao getMedicinesById(int id);
 }

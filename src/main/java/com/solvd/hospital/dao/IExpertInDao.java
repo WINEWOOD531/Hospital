@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.ExpertInModel;
+
 public interface IExpertInDao {
 
-    void createExpertIn();
+    void createExpertIn(ExpertInModel expertIn);
 
-    void updateExpertIn();
+    void updateExpertInById(int id);
 
-    void deleteExpertIn();
+    void deleteExpertInById(int id);
 
-    IExpertInDao getExpertIn();
+    IExpertInDao getExpertInById(int id);
 }

@@ -11,22 +11,22 @@ public class PersonDao implements IPersonDao {
     PersonModel pm = new PersonModel();
 
     @Override
-    public void createPerson() {
+    public void createPerson(PersonModel person) {
 
     }
 
     @Override
-    public void updatePersonById() {
+    public void updatePersonById(int id) {
 
     }
 
     @Override
-    public void deletePersonById() {
+    public void deletePersonById(int id) {
 
     }
 
     @Override
-    public IPersonDao getPersonById() {
+    public IPersonDao getPersonById(int id) {
         return null;
     }
 }

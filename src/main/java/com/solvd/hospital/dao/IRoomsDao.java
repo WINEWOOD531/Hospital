@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.RoomsModel;
+
 public interface IRoomsDao {
 
-    void createRoom();
+    void createRoom(RoomsModel rooms);
 
-    void updateRoom();
+    void updateRoomById(int id);
 
-    void deleteRoom();
+    void deleteRoomById(int id);
 
-    IRoomsDao getRoomByPatientId();
+    IRoomsDao getRoomByPatientId(int id);
 }

@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.RecordsModel;
+
 public interface IRecordsDao {
 
-    void createRecords();
+    void createRecords(RecordsModel records);
 
-    void updateRecords();
+    void updateRecordsById(int id);
 
-    void deleteRecords();
+    void deleteRecordsById(int id);
 
-    IRecordsDao getRecordsByPatientId();
+    IRecordsDao getRecordsByPatientId(int id);
 }

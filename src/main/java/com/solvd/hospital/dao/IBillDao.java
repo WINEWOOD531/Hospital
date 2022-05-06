@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.BillModel;
+
 public interface IBillDao {
 
-    void createBill();
+    void createBill(BillModel bill);
 
-    void updateBillByPatientId();
+    void updateBillByPatientId(int id);
 
-    void deleteBillByPatientId();
+    void deleteBillByPatientId(int id);
 
-    IBillDao getBillByPatientId();
+    IBillDao getBillByPatientId(int id);
 }

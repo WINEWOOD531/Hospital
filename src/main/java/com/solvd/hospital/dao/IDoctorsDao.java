@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.DoctorsModel;
+
 public interface IDoctorsDao {
 
-    void createDoctor();
+    void createDoctor(DoctorsModel doctors);
 
-    void updateDoctorById();
+    void updateDoctorById(int id);
 
-    void deleteDoctorById();
+    void deleteDoctorById(int id);
 
-    IDoctorsDao getDoctorById();
+    IDoctorsDao getDoctorById(int id);
 }

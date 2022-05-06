@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.TakesModel;
+
 public interface ITakesDao {
 
-    void createTakes();
+    void createTakes(TakesModel takes);
 
-    void updateTakes();
+    void updateTakesById(int id);
 
-    void deleteTakes();
+    void deleteTakesById(int id);
 
-    ITakesDao getTakes();
+    ITakesDao getTakesById(int id);
 }

@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.TestsDescriptionsModel;
+
 public interface ITestsDescriptionsDao {
 
-    void createTestsDescriptions();
+    void createTestsDescriptions(TestsDescriptionsModel testsDescriptions);
 
-    void updateTestsDescriptions();
+    void updateTestsDescriptionsById(int id);
 
-    void deleteTestsDescriptions();
+    void deleteTestsDescriptionsById(int id);
 
-    ITestsDescriptionsDao getTestsDescriptions();
+    ITestsDescriptionsDao getTestsDescriptionsById(int id);
 }

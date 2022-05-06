@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.AppointmentModel;
+
 public interface IAppointmentDao {
 
-    void createAppointment();
+    void createAppointment(AppointmentModel appointment);
 
-    void updateAppointmentById();
+    void updateAppointmentById(int id);
 
-    void deleteAppointmentById();
+    void deleteAppointmentById(int id);
 
-    IAppointmentDao getAppointmentById();
+    IAppointmentDao getAppointmentById(int id);
 }

@@ -1,12 +1,14 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.PersonModel;
+
 public interface IPersonDao {
 
-    void createPerson();
+    void createPerson(PersonModel person);
 
-    void updatePersonById();
+    void updatePersonById(int id);
 
-    void deletePersonById();
+    void deletePersonById(int id);
 
-    IPersonDao getPersonById();
+    IPersonDao getPersonById(int id);
 }

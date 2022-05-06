@@ -24,6 +24,6 @@ public class NursesDao implements INursesDao {
 
     @Override
     public INursesDao getNurseById() {
-        return this;
+        return null;
     }
 }

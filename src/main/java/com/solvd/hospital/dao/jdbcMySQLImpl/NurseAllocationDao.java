@@ -25,6 +25,6 @@ public class NurseAllocationDao implements INurseAllocationDao {
 
     @Override
     public INurseAllocationDao getNurseAllocation() {
-        return this;
+        return null;
     }
 }

@@ -25,6 +25,6 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
 
     @Override
     public ITestsDescriptionsDao getTestsDescriptions() {
-        return this;
+        return null;
     }
 }

@@ -25,6 +25,6 @@ public class TestsDao implements ITestsDao {
 
     @Override
     public ITestsDao getTestsById() {
-        return this;
+        return null;
     }
 }

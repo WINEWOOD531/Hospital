@@ -9,4 +9,5 @@ public interface INurseAllocationDao {
     void deleteNurses();
 
     INurseAllocationDao getNurseAllocation();
+
 }

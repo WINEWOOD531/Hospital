@@ -25,6 +25,6 @@ public class SpecializationDao implements ISpecializationDao {
 
     @Override
     public ISpecializationDao getSpecializationById() {
-        return this;
+        return null;
     }
 }

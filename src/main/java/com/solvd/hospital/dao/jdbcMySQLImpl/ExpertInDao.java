@@ -25,6 +25,6 @@ public class ExpertInDao implements IExpertInDao {
 
     @Override
     public IExpertInDao getExpertIn() {
-        return this;
+        return null;
     }
 }

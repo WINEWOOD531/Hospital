@@ -25,6 +25,6 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public IAppointmentDao getAppointmentById() {
-        return this;
+        return null;
     }
 }

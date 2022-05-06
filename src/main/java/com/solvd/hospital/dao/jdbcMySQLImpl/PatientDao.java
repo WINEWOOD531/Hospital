@@ -25,6 +25,6 @@ public class PatientDao implements IPatientDao {
 
     @Override
     public IPatientDao getPatientById() {
-        return this;
+        return null;
     }
 }

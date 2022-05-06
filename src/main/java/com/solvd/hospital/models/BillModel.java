@@ -1,7 +1,5 @@
 package com.solvd.hospital.models;
 
-import com.solvd.hospital.dao.jdbcMySQLImpl.PatientDao;
-
 public class BillModel {
 
     private int id;

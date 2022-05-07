@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class PersonModel {
+public abstract class PersonModel {
 
     private int id;
     private String firstName;

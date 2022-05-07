@@ -1,17 +1,17 @@
 package com.solvd.hospital.models;
 
-public class PatientModel {
+public class PatientModel extends PersonModel{
 
     private int id;
     private int age;
     private String bloodGroup;
-    private char sex;
+    private String sex;
     private PersonModel person;
 
-    public PatientModel() {
+    public PatientModel(int i, int i1, String s, String f) {
     }
 
-    public PatientModel(int id, int age, String bloodGroup, char sex, PersonModel person) {
+    public PatientModel(int id, int age, String bloodGroup, String sex, PersonModel person) {
         this.id = id;
         this.age = age;
         this.bloodGroup = bloodGroup;
@@ -31,7 +31,7 @@ public class PatientModel {
         this.bloodGroup = bloodGroup;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 
@@ -51,7 +51,7 @@ public class PatientModel {
         return bloodGroup;
     }
 
-    public char getSex() {
+    public String getSex() {
         return sex;
     }
 

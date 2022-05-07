@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 public class PersonDao implements IPersonDao {
 
     private static final Logger LOGGER = LogManager.getLogger(PersonDao.class);
-    PersonModel pm = new PersonModel();
+
 
     @Override
     public void createPerson(PersonModel person) {

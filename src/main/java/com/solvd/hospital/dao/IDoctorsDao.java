@@ -4,11 +4,11 @@ import com.solvd.hospital.models.DoctorsModel;
 
 public interface IDoctorsDao {
 
-    void createDoctor(DoctorsModel doctors);
+    void createDoctor(int id,String availaibleDate,int personId);
 
     void updateDoctorById(int id);
 
     void deleteDoctorById(int id);
 
-    IDoctorsDao getDoctorById(int id);
+    DoctorsModel getDoctorByDate(String date);
 }

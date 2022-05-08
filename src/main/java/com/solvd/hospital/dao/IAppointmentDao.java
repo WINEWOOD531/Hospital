@@ -4,11 +4,11 @@ import com.solvd.hospital.models.AppointmentModel;
 
 public interface IAppointmentDao {
 
-    void createAppointment(AppointmentModel appointment);
+    void createAppointment(int id,String appointmentDate,int doctorsId,int patientsId);
 
-    void updateAppointmentById(int id);
+    void updateAppointment(String appointmentDate,int id);
 
     void deleteAppointmentById(int id);
 
-    IAppointmentDao getAppointmentById(int id);
+    AppointmentModel getAppointmentByDoctorId(int id);
 }

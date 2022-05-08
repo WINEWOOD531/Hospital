@@ -4,11 +4,11 @@ import com.solvd.hospital.models.ExpertInModel;
 
 public interface IExpertInDao {
 
-    void createExpertIn(ExpertInModel expertIn);
+    void createExpertIn(int id,int doctorsId,int specializationId);
 
-    void updateExpertInById(int id);
+    void updateExpertIn(int specializationId,int id);
 
     void deleteExpertInById(int id);
 
-    IExpertInDao getExpertInById(int id);
+    ExpertInModel getExpertInBySpecializationId(int id);
 }

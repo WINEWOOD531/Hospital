@@ -4,11 +4,11 @@ import com.solvd.hospital.models.RoomsModel;
 
 public interface IRoomsDao {
 
-    void createRoom(RoomsModel rooms);
+    void createRoom(int id, String roomNumber, String departmentName, String dateIn, String dateOut, int patientId);
 
-    void updateRoomById(int id);
+    void updateRoom(String dateIn, int id);
 
     void deleteRoomById(int id);
 
-    IRoomsDao getRoomByPatientId(int id);
+    RoomsModel getRoomByDepartmentName(String name);
 }

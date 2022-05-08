@@ -1,16 +1,15 @@
 package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.NurseAllocationModel;
-import com.solvd.hospital.models.NursesModel;
 
 public interface INurseAllocationDao {
 
-    void createNurses(NurseAllocationModel nurseAllocation);
+    void createNurseAllocation(int id,String dateIn,String dateOut,int nursesId,int doctorsId,int personId);
 
-    void updateNursesById(int id);
+    void updateNursesAllocation(String dateIn,int id);
 
-    void deleteNursesById(int id);
+    void deleteNursesAllocationById(int id);
 
-    INurseAllocationDao getNurseAllocationById(int id);
+    NurseAllocationModel getNurseAllocationById(int id);
 
 }

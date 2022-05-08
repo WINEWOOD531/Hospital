@@ -6,9 +6,9 @@ public interface IMedicinesDao {
 
     void createMedicines(MedicinesModel medicines);
 
-    void updateMedicinesById(int id);
+    void updateMedicines(String medicineName,int id);
 
     void deleteMedicinesById(int id);
 
-    IMedicinesDao getMedicinesById(int id);
+    MedicinesModel getMedicinesByName(String medicineName);
 }

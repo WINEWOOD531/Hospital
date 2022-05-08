@@ -4,11 +4,11 @@ import com.solvd.hospital.models.BillModel;
 
 public interface IBillDao {
 
-    void createBill(BillModel bill);
+    void createBill(int id,Double sum,String paymentDate,int patientId);
 
-    void updateBillByPatientId(int id);
+    void updateBill(Double sum, int id);
 
     void deleteBillByPatientId(int id);
 
-    IBillDao getBillByPatientId(int id);
+    BillModel getBillByPatientId(int id);
 }

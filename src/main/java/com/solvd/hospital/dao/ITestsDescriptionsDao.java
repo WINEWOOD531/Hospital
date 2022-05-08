@@ -4,11 +4,11 @@ import com.solvd.hospital.models.TestsDescriptionsModel;
 
 public interface ITestsDescriptionsDao {
 
-    void createTestsDescriptions(TestsDescriptionsModel testsDescriptions);
+    void createTestsDescriptions(int id, String testDate, String testAnalysis, int testsId, int patientsId);
 
-    void updateTestsDescriptionsById(int id);
+    void updateTestsDescriptions(String text, int id);
 
     void deleteTestsDescriptionsById(int id);
 
-    ITestsDescriptionsDao getTestsDescriptionsById(int id);
+    TestsDescriptionsModel getTestsDescriptionsByTestId(int id);
 }

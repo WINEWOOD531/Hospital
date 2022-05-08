@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class PatientModel extends PersonModel{
+public class PatientModel extends PersonModel {
 
     private int id;
     private int age;
@@ -8,7 +8,7 @@ public class PatientModel extends PersonModel{
     private String sex;
     private PersonModel person;
 
-    public PatientModel(int i, int i1, String s, String f) {
+    public PatientModel() {
     }
 
     public PatientModel(int id, int age, String bloodGroup, String sex, PersonModel person) {

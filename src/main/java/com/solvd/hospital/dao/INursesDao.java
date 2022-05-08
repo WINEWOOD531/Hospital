@@ -4,11 +4,11 @@ import com.solvd.hospital.models.NursesModel;
 
 public interface INursesDao {
 
-    void createNurse(NursesModel nurses);
+    void createNurse(int id,int personId,int  workExperience);
 
-    void updateNurseById(int id);
+    void updateNurse(int workExperience,int id);
 
     void deleteNurseById(int id);
 
-    INursesDao getNurseById(int id);
+    NursesModel getNurseByIdWorkExperience(int workExperience);
 }

@@ -4,11 +4,11 @@ import com.solvd.hospital.models.PatientModel;
 
 public interface IPatientDao {
 
-    void createPatient(PatientModel patient);
+    void createPatient(int id,int age,String bloodGroup,String sex,int personId);
 
-    void updatePatientById(int id);
+    void updatePatient(String bloodGroup,int id);
 
     void deletePatientById(int id);
 
-    IPatientDao getPatientById(int id);
+    PatientModel getPatientByAge(int age);
 }

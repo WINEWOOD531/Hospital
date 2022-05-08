@@ -4,11 +4,11 @@ import com.solvd.hospital.models.RecordsModel;
 
 public interface IRecordsDao {
 
-    void createRecords(RecordsModel records);
+    void createRecords(int id,String recordAnalysis,int patientId);
 
-    void updateRecordsById(int id);
+    void updateRecords(int id,String text);
 
     void deleteRecordsById(int id);
 
-    IRecordsDao getRecordsByPatientId(int id);
+    RecordsModel getRecordsByPatientId(int id);
 }

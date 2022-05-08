@@ -4,11 +4,11 @@ import com.solvd.hospital.models.TakesModel;
 
 public interface ITakesDao {
 
-    void createTakes(TakesModel takes);
+    void createTakes(int id,Double quantiti, String takesDate, int medicinessId, int patientsId);
 
-    void updateTakesById(int id);
+    void updateTakes(Double quantiti,int id);
 
     void deleteTakesById(int id);
 
-    ITakesDao getTakesById(int id);
+    TakesModel getTakesByMedicineId(int id);
 }

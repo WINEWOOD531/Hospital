@@ -6,9 +6,9 @@ public interface ISpecializationDao {
 
     void createSpecialization(SpecializationModel specialization);
 
-    void updateSpecializationById(int id);
+    void updateSpecialization(String specializationName, int id);
 
     void deleteSpecializationById(int id);
 
-    ISpecializationDao getSpecializationById(int id);
+    SpecializationModel getSpecializationByName(String name);
 }

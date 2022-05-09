@@ -51,10 +51,10 @@ public class Executor {
 
             Document document = documentBuilder.newDocument();
 
-            Element root = document.createElement("patient");
+            Element root = document.createElement("patients");
             document.appendChild(root);
 
-            Element employee = document.createElement("characteristics");
+            Element employee = document.createElement("patient");
 
             root.appendChild(employee);
 
@@ -106,14 +106,14 @@ public class Executor {
             Document document = dBuilder.parse(inputFile);
             document.getDocumentElement().normalize();
 
-            LOGGER.info("Root element:"
+            LOGGER.info("Root element: "
                     + document.getDocumentElement().getNodeName());
             NodeList nodeList =
-                    document.getElementsByTagName("characteristics");
+                    document.getElementsByTagName("patient");
 
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
-                System.out.println("\nCurrent Element:"
+                System.out.println("\nCurrent Element: "
                         + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;

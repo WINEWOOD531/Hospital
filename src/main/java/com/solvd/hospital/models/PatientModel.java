@@ -8,7 +8,7 @@ public class PatientModel extends PersonModel {
     private String sex;
     private PersonModel person;
 
-    public PatientModel() {
+    public PatientModel(int i, int i1, String s, String f) {
     }
 
     public PatientModel(int id, int age, String bloodGroup, String sex, PersonModel person) {

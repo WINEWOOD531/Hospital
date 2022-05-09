@@ -11,18 +11,11 @@ import java.util.ResourceBundle;
 public class TakesDao implements ITakesDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TakesDao.class);
-    static final String DATABASE_URL = "jdbc:mysql://localhost/hospital";
 
-    static final String USER = "root";
-    static final String PASSWORD = "Winewood*531*";
     ResourceBundle resource = ResourceBundle.getBundle("db");
     String url = resource.getString("db.url");
     String user = resource.getString("db.username");
     String pass = resource.getString("db.password");
-
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-
-    }
 
     @Override
     public void createTakes(int id, Double quantiti, String takesDate, int medicinessId, int patientsId) {

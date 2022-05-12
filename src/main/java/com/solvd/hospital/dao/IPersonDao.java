@@ -1,6 +1,8 @@
 package com.solvd.hospital.dao;
 import com.solvd.hospital.models.PersonModel;
 
+import java.util.List;
+
 public interface IPersonDao {
 
     void createPerson(int id, String firstName, String lastName, String phoneNumber);
@@ -9,5 +11,5 @@ public interface IPersonDao {
 
     void deletePersonById(int id);
 
-    PersonModel getPersonByName(String name);
+    List<PersonModel> getPersonByName(String name);
 }

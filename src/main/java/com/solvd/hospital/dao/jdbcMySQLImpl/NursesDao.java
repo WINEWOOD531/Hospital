@@ -2,43 +2,32 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.INursesDao;
 import com.solvd.hospital.models.NursesModel;
+import com.solvd.hospital.utility.parsers.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NursesDao implements INursesDao {
 
     private static final Logger LOGGER = LogManager.getLogger(NursesDao.class);
 
-    static final String DATABASE_URL = "jdbc:mysql://localhost/hospital";
-
-    static final String USER = "root";
-    static final String PASSWORD = "Winewood*531*";
-    ResourceBundle resource = ResourceBundle.getBundle("db");
-    String url = resource.getString("db.url");
-    String user = resource.getString("db.username");
-    String pass = resource.getString("db.password");
-
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        //getAllNurses();
-
-    }
+    final String deleteStatementS = "DELETE FROM Nurses WHERE id=?";
+    final String getStatement = "SELECT * FROM Nurses WHERE workExperience > ?";
+    final String insertStatementS = "INSERT INTO Nurses VALUES (?, ?,?)";
+    final String updateStatementS = "UPDATE Nurses SET workExperience=? WHERE id=?";
 
     @Override
     public void createNurse(int id, int personId, int workExperience) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO\n" +
-                    " Nurses VALUES (?, ?, ?);");
+        try (Connection dbConnect = DataBaseConnection.getConnection()) {
+            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
             stmt.setInt(1, id);
             stmt.setInt(2, personId);
             stmt.setInt(3, workExperience);
-
             int i = stmt.executeUpdate();
             LOGGER.info(i + " records inserted");
-
         } catch (Exception e) {
             LOGGER.info(e);
         }
@@ -46,15 +35,12 @@ public class NursesDao implements INursesDao {
 
     @Override
     public void updateNurse(int workExperience, int id) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("UPDATE Nurses SET workExperience=? WHERE id=?");
+        try (Connection dbConnect = DataBaseConnection.getConnection()) {
+            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
             stmt.setInt(1, workExperience);
             stmt.setInt(2, id);
-
             int i = stmt.executeUpdate();
             LOGGER.info(i + " records updated");
-
         } catch (Exception e) {
             LOGGER.info(e);
         }
@@ -62,71 +48,49 @@ public class NursesDao implements INursesDao {
 
     @Override
     public void deleteNurseById(int id) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("DELETE FROM Nurses WHERE id=?");
-            stmt.setInt(1, id);
-
-            int i = stmt.executeUpdate();
+        int x = 0;
+        Connection dbConnect = DataBaseConnection.getConnection();
+        PreparedStatement deleteStatement = null;
+        try {
+            deleteStatement = dbConnect.prepareStatement(deleteStatementS);
+            deleteStatement.setInt(1, id);
+            int i = deleteStatement.executeUpdate();
             LOGGER.info(i + " records deleted");
-
-        } catch (Exception e) {
-            LOGGER.info(e);
+        } catch (SQLException e) {
+            LOGGER.error("ERROR DELETE Nurses WITH ID " + e.getMessage());
+            x = 1;
+        } finally {
+            DataBaseConnection.close(deleteStatement);
+            DataBaseConnection.close(dbConnect);
+            if (x == 0) {
+                LOGGER.info("SUCCESS CLOSE");
+            } else
+                LOGGER.info("FAIL CLOSE");
         }
     }
 
     @Override
-    public NursesModel getNurseByIdWorkExperience(int workExperience) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM Nurses WHERE workExperience > ?");
+    public List<NursesModel> getNurseByIdWorkExperience(int workExperience) {
+        try (Connection dbConnect = DataBaseConnection.getConnection()) {
+            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
             stmt.setInt(1, workExperience);
             ResultSet rs = stmt.executeQuery();
+            ArrayList<NursesModel> nursesModels = new ArrayList<>();
             while (rs.next()) {
-                LOGGER.info("Id: " + rs.getInt(1) + "\nPerson Id: " + rs.getInt(2) +
-                        "\nWork Experience: " + rs.getInt(3));
+                int personId = rs.getInt(2);
+                int id = rs.getInt(1);
+                workExperience = rs.getInt(3);
+                NursesModel nursesModel = new NursesModel(personId, id, workExperience);
+                nursesModels.add(nursesModel);
+                nursesModel.toString();
             }
+            LOGGER.info("ALL is OK!");
+            return nursesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         }
         return null;
     }
 
-    public static void getAllNurses() throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        Statement statement = null;
 
-        LOGGER.info("Registering JDBC driver...");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        LOGGER.info("Creating database connection...");
-        connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-
-        LOGGER.info("Executing statement...");
-        statement = connection.createStatement();
-
-        String sql;
-        sql = "SELECT * FROM Nurses";
-
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        LOGGER.info("Retrieving data from database...");
-        LOGGER.info("\nNurses:");
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            int personId = resultSet.getInt("Person_id");
-            int workExperience = resultSet.getInt("workExperience");
-
-            LOGGER.info("\n================\n");
-            LOGGER.info("id: " + id);
-            LOGGER.info("Person id:" + personId);
-            LOGGER.info("Work Experience: " + workExperience);
-        }
-
-        LOGGER.info("Closing connection and releasing resources...");
-        resultSet.close();
-        statement.close();
-        connection.close();
-    }
 }

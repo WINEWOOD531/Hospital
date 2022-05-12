@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class TakesModel {
+public class TakesModel{
 
     private int id;
     private Double quantity;

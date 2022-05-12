@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.RoomsModel;
 
+import java.util.ArrayList;
+
 public interface IRoomsDao {
 
     void createRoom(int id, String roomNumber, String departmentName, String dateIn, String dateOut, int patientId);
@@ -10,5 +12,5 @@ public interface IRoomsDao {
 
     void deleteRoomById(int id);
 
-    RoomsModel getRoomByDepartmentName(String name);
+    ArrayList<RoomsModel> getRoomByDepartmentName(String name);
 }

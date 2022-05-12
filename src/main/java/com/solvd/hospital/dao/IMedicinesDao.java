@@ -1,14 +1,17 @@
 package com.solvd.hospital.dao;
 
+import com.solvd.hospital.models.AppointmentModel;
 import com.solvd.hospital.models.MedicinesModel;
+
+import java.util.List;
 
 public interface IMedicinesDao {
 
-    void createMedicines(MedicinesModel medicines);
+    void createMedicines(int id, String medicineName);
 
     void updateMedicines(String medicineName,int id);
 
     void deleteMedicinesById(int id);
 
-    MedicinesModel getMedicinesByName(String medicineName);
+    List<MedicinesModel>  getMedicinesByName(String medicineName);
 }

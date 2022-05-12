@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.TakesModel;
 
+import java.util.ArrayList;
+
 public interface ITakesDao {
 
     void createTakes(int id,Double quantiti, String takesDate, int medicinessId, int patientsId);
@@ -10,5 +12,5 @@ public interface ITakesDao {
 
     void deleteTakesById(int id);
 
-    TakesModel getTakesByMedicineId(int id);
+    ArrayList<TakesModel> getTakesByMedicineId(int id);
 }

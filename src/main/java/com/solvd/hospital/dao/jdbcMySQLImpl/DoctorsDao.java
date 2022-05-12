@@ -2,132 +2,106 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IDoctorsDao;
 import com.solvd.hospital.models.DoctorsModel;
+import com.solvd.hospital.utility.parsers.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DoctorsDao implements IDoctorsDao {
 
     private static final Logger LOGGER = LogManager.getLogger(DoctorsDao.class);
-
-    static final String DATABASE_URL = "jdbc:mysql://localhost/hospital";
-
-    static final String USER = "root";
-    static final String PASSWORD = "Winewood*531*";
-    ResourceBundle resource = ResourceBundle.getBundle("db");
-    String url = resource.getString("db.url");
-    String user = resource.getString("db.username");
-    String pass = resource.getString("db.password");
-
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        //getAllDoctors();
-    }
+    final String deleteStatementS = "DELETE FROM Doctors WHERE id = ?";
+    final String getStatement = "SELECT * FROM Doctors WHERE availaibleDate LIKE ? ESCAPE '!'";
+    final String insertStatementS = "INSERT INTO Doctors VALUES (?, ?, ?)";
+    final String updateStatementS = "UPDATE Doctors SET availaibleDate=? WHERE id=?";
 
     @Override
-    public void createDoctor(int id, String availaibleDate, int personId) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO\n" +
-                    " Doctors VALUES (?, ?, ?);");
-            stmt.setInt(1, id);
-            stmt.setString(2, availaibleDate);
-            stmt.setInt(3, personId);
-
+    public void createDoctor(DoctorsModel doctorsModel) {
+        try (Connection dbConnect = DataBaseConnection.getConnection()) {
+            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
+            stmt.setInt(1, doctorsModel.getId());
+            stmt.setString(2, doctorsModel.getAvailableDate());
+            stmt.setInt(3, doctorsModel.getPersonId());
             int i = stmt.executeUpdate();
             LOGGER.info(i + " records inserted");
-
         } catch (Exception e) {
             LOGGER.info(e);
         }
     }
 
     @Override
-    public void updateDoctorById(int id) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
+    public void updateDoctor(String availaibleDate, int id) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        PreparedStatement updateStatement = null;
+        int x = 0;
+        try {
+            updateStatement = dbConnect.prepareStatement(updateStatementS);
+            updateStatement.setString(1, availaibleDate);
+            updateStatement.setInt(2, id);
+            updateStatement.executeUpdate();
 
-            PreparedStatement stmt = con.prepareStatement("UPDATE Doctors SET availaibleDate=? WHERE id=?");
-            stmt.setString(1, "2022-05-19");
-            stmt.setInt(2, 9);
-
-            int i = stmt.executeUpdate();
-            LOGGER.info(i + " records updated");
-
-        } catch (Exception e) {
-            LOGGER.info(e);
+        } catch (SQLException e) {
+            LOGGER.error("ERROR UPDATE CLIENTS " + e.getMessage());
+            x = 1;
+        } finally {
+            DataBaseConnection.close(updateStatement);
+            DataBaseConnection.close(dbConnect);
+            if (x == 0) {
+                LOGGER.info("SUCCESS CLOSE");
+            } else
+                LOGGER.info("FAIL CLOSE");
         }
+
     }
 
     @Override
     public void deleteDoctorById(int id) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("DELETE FROM Doctors WHERE id=?");
-            stmt.setInt(1, 9);
-
-            int i = stmt.executeUpdate();
-            LOGGER.info(i + " records deleted");
-
-        } catch (Exception e) {
-            LOGGER.info(e);
+        int x = 0;
+        Connection dbConnect = DataBaseConnection.getConnection();
+        PreparedStatement deleteStatement = null;
+        try {
+            deleteStatement = dbConnect.prepareStatement(deleteStatementS);
+            deleteStatement.setInt(1, id);
+            deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("ERROR DELETE Doctor WITH ID " + e.getMessage());
+            x = 1;
+        } finally {
+            DataBaseConnection.close(deleteStatement);
+            DataBaseConnection.close(dbConnect);
+            if (x == 0) {
+                LOGGER.info("SUCCESS CLOSE");
+            } else
+                LOGGER.info("FAIL CLOSE");
         }
+
     }
 
     @Override
-    public DoctorsModel getDoctorByDate(String date) {
-        try (Connection con = DriverManager.getConnection(url, user, pass)) {
-
-            PreparedStatement stmt = con.prepareStatement("SELECT * " +
-                    "FROM Doctors WHERE availaibleDate LIKE ? ESCAPE '!'");
-            stmt.setString(1, date + "%");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                LOGGER.info("Id: " + rs.getInt(1) + "\n"
-                        + "Availaible Date: " + rs.getString(2) +
-                        "\n Person Id:  " + rs.getInt(3));
+    public List<DoctorsModel> getDoctorByDate(String date) {
+        ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
+        try (Connection con = DataBaseConnection.getConnection()) {
+            PreparedStatement statement = con.prepareStatement(getStatement);
+            statement.setString(1, date + "%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                int id = result.getInt("Person_id");
+                String availaibleDate = result.getString("availaibleDate");
+                int personId = result.getInt("id");
+                DoctorsModel doctors = new DoctorsModel(id, availaibleDate, personId);
+                doctorsModels.add(doctors);
+                doctors.toString();
             }
+            LOGGER.info("ALL is OK!");
+            return doctorsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         }
         return null;
     }
 
-    public static void getAllDoctors() throws ClassNotFoundException, SQLException {
-        Connection connection = null;
-        Statement statement = null;
-
-        LOGGER.info("Registering JDBC driver...");
-
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        LOGGER.info("Creating database connection...");
-        connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
-
-        LOGGER.info("Executing statement...");
-        statement = connection.createStatement();
-
-        String sql;
-        sql = "SELECT * FROM Doctors";
-
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        LOGGER.info("Retrieving data from database...");
-        LOGGER.info("\nDoctors:");
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String availaibleDate = resultSet.getString("availaibleDate");
-            int personId = resultSet.getInt("Person_id");
-
-            LOGGER.info("\n================\n");
-            LOGGER.info("id: " + id);
-            LOGGER.info("Availaible Date:" + availaibleDate);
-            LOGGER.info("Person Id: " + personId);
-        }
-
-        LOGGER.info("Closing connection and releasing resources...");
-        resultSet.close();
-        statement.close();
-        connection.close();
-    }
 }

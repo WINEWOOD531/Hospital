@@ -1,24 +1,31 @@
 package com.solvd.hospital.models;
 
+
+
 import java.util.List;
 
-public class DoctorsModel {
+public class DoctorsModel extends PersonModel{
 
     private int id;
     private String availableDate;
-    private PersonModel person;
     private List<ExpertInModel> expertIn;
     private List<AppointmentModel> appointment;
     private List<NurseAllocationModel> nurseAllocations;
 
+
     public DoctorsModel() {
+
+    }
+    public DoctorsModel(int id,String availableDate,int personId) {
+        this.id = id;
+        this.availableDate = availableDate;
+        setId(personId);
     }
 
-    public DoctorsModel(int id, String availableDate, PersonModel person, List<ExpertInModel> expertIn,
+    public DoctorsModel(int id, String availableDate, List<ExpertInModel> expertIn,
                         List<AppointmentModel> appointment, List<NurseAllocationModel> nurseAllocations) {
         this.id = id;
         this.availableDate = availableDate;
-        this.person = person;
         this.expertIn = expertIn;
         this.appointment = appointment;
         this.nurseAllocations = nurseAllocations;
@@ -32,9 +39,6 @@ public class DoctorsModel {
         this.availableDate = availableDate;
     }
 
-    public void setPerson(PersonModel person) {
-        this.person = person;
-    }
 
     public void setExpertIn(List<ExpertInModel> expertIn) {
         this.expertIn = expertIn;
@@ -54,10 +58,6 @@ public class DoctorsModel {
 
     public String getAvailableDate() {
         return availableDate;
-    }
-
-    public PersonModel getPerson() {
-        return person;
     }
 
     public List<ExpertInModel> getExpertIn() {

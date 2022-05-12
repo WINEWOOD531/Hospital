@@ -1,5 +1,6 @@
 package com.solvd.hospital.models;
 
+
 public abstract class PersonModel {
 
     private int id;
@@ -17,7 +18,7 @@ public abstract class PersonModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setId(int id) {
+    public void setPersonId(int id) {
         this.id = id;
     }
 
@@ -33,7 +34,7 @@ public abstract class PersonModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
+    public int getPersonId() {
         return id;
     }
 

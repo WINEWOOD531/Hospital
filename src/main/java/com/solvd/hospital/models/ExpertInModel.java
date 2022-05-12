@@ -15,7 +15,7 @@ public class ExpertInModel {
         this.specialization = specialization;
     }
 
-    public void setId(int id) {
+    public void setPersonId(int id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class ExpertInModel {
         this.specialization = specialization;
     }
 
-    public int getId() {
+    public int getPersonId() {
         return id;
     }
 

@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.PatientModel;
 
+import java.util.ArrayList;
+
 public interface IPatientDao {
 
     void createPatient(int id,int age,String bloodGroup,String sex,int personId);
@@ -10,5 +12,5 @@ public interface IPatientDao {
 
     void deletePatientById(int id);
 
-    PatientModel getPatientByAge(int age);
+    ArrayList<PatientModel> getPatientByAge(int age);
 }

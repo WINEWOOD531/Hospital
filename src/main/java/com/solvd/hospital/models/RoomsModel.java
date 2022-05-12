@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class RoomsModel {
+public class RoomsModel{
 
     private int id;
     private String roomNumber;

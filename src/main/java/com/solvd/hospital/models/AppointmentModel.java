@@ -7,7 +7,11 @@ public class AppointmentModel {
     private DoctorsModel doctors;
     private PatientModel patient;
 
+
     public AppointmentModel() {
+    }
+
+    public AppointmentModel(int id, String appointmentDate, int doctorsModelId, int patientModelId) {
     }
 
     public AppointmentModel(int id, String appointmentDate, DoctorsModel doctors, PatientModel patient) {
@@ -16,6 +20,7 @@ public class AppointmentModel {
         this.doctors = doctors;
         this.patient = patient;
     }
+
 
     public void setId(int id) {
         this.id = id;

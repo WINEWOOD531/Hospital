@@ -7,7 +7,7 @@ public class BillModel {
     private String paymentDate;
     private PatientModel patient;
 
-    public BillModel() {
+    public BillModel(int id, Double sum, String paymentDate, int patientId) {
     }
 
     public BillModel(int id, Double sum, String paymentDate, PatientModel patient) {
@@ -17,7 +17,7 @@ public class BillModel {
         this.patient = patient;
     }
 
-    public void setId(int id) {
+    public void setPersonId(int id) {
         this.id = id;
     }
 
@@ -33,7 +33,7 @@ public class BillModel {
         this.patient = patient;
     }
 
-    public int getId() {
+    public int getPersonId() {
         return id;
     }
 

@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.RecordsModel;
 
+import java.util.List;
+
 public interface IRecordsDao {
 
     void createRecords(int id,String recordAnalysis,int patientId);
@@ -10,5 +12,5 @@ public interface IRecordsDao {
 
     void deleteRecordsById(int id);
 
-    RecordsModel getRecordsByPatientId(int id);
+    List<RecordsModel> getRecordsByPatientId(int id);
 }

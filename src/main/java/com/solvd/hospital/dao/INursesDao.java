@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.NursesModel;
 
+import java.util.List;
+
 public interface INursesDao {
 
     void createNurse(int id,int personId,int  workExperience);
@@ -10,5 +12,5 @@ public interface INursesDao {
 
     void deleteNurseById(int id);
 
-    NursesModel getNurseByIdWorkExperience(int workExperience);
+    List<NursesModel> getNurseByIdWorkExperience(int workExperience);
 }

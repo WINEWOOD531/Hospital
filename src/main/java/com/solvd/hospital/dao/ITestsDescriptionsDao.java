@@ -2,6 +2,8 @@ package com.solvd.hospital.dao;
 
 import com.solvd.hospital.models.TestsDescriptionsModel;
 
+import java.util.ArrayList;
+
 public interface ITestsDescriptionsDao {
 
     void createTestsDescriptions(int id, String testDate, String testAnalysis, int testsId, int patientsId);
@@ -10,5 +12,5 @@ public interface ITestsDescriptionsDao {
 
     void deleteTestsDescriptionsById(int id);
 
-    TestsDescriptionsModel getTestsDescriptionsByTestId(int id);
+    ArrayList<TestsDescriptionsModel> getTestsDescriptionsByTestId(int id);
 }

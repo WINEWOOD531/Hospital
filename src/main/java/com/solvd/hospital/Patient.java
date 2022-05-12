@@ -1,11 +1,10 @@
-package com.solvd.hospital.models;
+package com.solvd.hospital;
 
 import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class PatientModel extends PersonModel {
-
+public class Patient {
     @XmlAttribute
     private int id;
 
@@ -18,15 +17,18 @@ public class PatientModel extends PersonModel {
     @XmlElement
     private String sex;
 
-    public PatientModel() {
+    @XmlTransient
+    private String passportNumber;
+
+    public Patient() {
     }
 
-    public PatientModel(int id, int age, String bloodGroup, String sex,int personId) {
+    public Patient(int id, int age, String bloodGroup, String sex, String passportNumber) {
         this.id = id;
         this.age = age;
         this.bloodGroup = bloodGroup;
         this.sex = sex;
-        setId(personId);
+        this.passportNumber = passportNumber;
     }
 
     public void setId(int id) {
@@ -45,9 +47,9 @@ public class PatientModel extends PersonModel {
         this.sex = sex;
     }
 
-/*    public void setPerson(PersonModel person) {
-        this.person = person;
-    }*/
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
 
     public int getId() {
         return id;
@@ -65,17 +67,18 @@ public class PatientModel extends PersonModel {
         return sex;
     }
 
-/*    public PersonModel getPerson() {
-        return person;
-    }*/
+    public String getPassportNumber() {
+        return passportNumber;
+    }
 
     @Override
     public String toString() {
-        return "PatientModel{" +
+        return "Patient{" +
                 "id=" + id +
                 ", age=" + age +
                 ", bloodGroup='" + bloodGroup + '\'' +
                 ", sex='" + sex + '\'' +
+                ", passportNumber='" + passportNumber + '\'' +
                 '}';
     }
 }

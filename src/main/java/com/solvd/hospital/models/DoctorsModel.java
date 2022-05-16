@@ -71,4 +71,15 @@ public class DoctorsModel extends PersonModel{
     public List<NurseAllocationModel> getNurseAllocations() {
         return nurseAllocations;
     }
+
+    @Override
+    public String toString() {
+        return "DoctorsModel{" +
+                "id=" + id +
+                ", availableDate='" + availableDate + '\'' +
+                ", expertIn=" + expertIn +
+                ", appointment=" + appointment +
+                ", nurseAllocations=" + nurseAllocations +
+                '}';
+    }
 }

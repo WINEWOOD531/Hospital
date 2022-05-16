@@ -2,16 +2,13 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IAppointmentDao;
 import com.solvd.hospital.models.AppointmentModel;
-import com.solvd.hospital.models.DoctorsModel;
-import com.solvd.hospital.models.PatientModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class AppointmentDao implements IAppointmentDao {
 
@@ -20,73 +17,93 @@ public class AppointmentDao implements IAppointmentDao {
     final String getStatement = "SELECT * FROM appointment WHERE Doctors_id = ?";
     final String insertStatementS = "INSERT INTO appointment VALUES (?, ?, ?,?)";
     final String updateStatementS = "UPDATE appointment SET appointmentDate=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM appointment";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createAppointment(int id, String appointmentDate, int doctorsModelId, int patientModelId) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setString(2, appointmentDate);
-            stmt.setInt(3, doctorsModelId);
-            stmt.setInt(4, patientModelId);
-            int i = stmt.executeUpdate();
+    public void createAppointment(AppointmentModel appointmentModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, appointmentModel.getId());
+            statement.setString(2, appointmentModel.getAppointmentDate());
+            statement.setInt(3, appointmentModel.getDoctors().getId());
+            statement.setInt(4, appointmentModel.getPatient().getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateAppointment(String appointmentDate, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setString(1, appointmentDate);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateAppointment(AppointmentModel appointmentModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setString(1, appointmentModel.getAppointmentDate());
+            statement.setInt(2, appointmentModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteAppointmentById(int id) {
-        int x = 0;
+    public void deleteAppointmentById(AppointmentModel appointmentModel) {
+
         Connection dbConnect = DataBaseConnection.getConnection();
-        PreparedStatement deleteStatement = null;
+
         try {
-            deleteStatement = dbConnect.prepareStatement(deleteStatementS);
-            deleteStatement.setInt(1, id);
-            int i = deleteStatement.executeUpdate();
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, appointmentModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (SQLException e) {
             LOGGER.error("ERROR DELETE Appointment WITH ID " + e.getMessage());
-            x = 1;
         } finally {
-            DataBaseConnection.close(deleteStatement);
-            DataBaseConnection.close(dbConnect);
-            if (x == 0) {
-                LOGGER.info("SUCCESS CLOSE");
-            } else
-                LOGGER.info("FAIL CLOSE");
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<AppointmentModel> getAppointmentByDoctorId(int id) {
-        try (Connection con = DataBaseConnection.getConnection()) {
-            DoctorsModel doctors = new DoctorsModel();
-            PatientModel patient = new PatientModel();
-            PreparedStatement statement = con.prepareStatement(getStatement);
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
+            result = statement.executeQuery();
             ArrayList<AppointmentModel> appointmentModels = new ArrayList<AppointmentModel>();
             while (result.next()) {
-                id = result.getInt(1);
-                String appointmentDate = result.getString(2);
-                int doctorsId = result.getInt(3);
-                int patientId = result.getInt(4);
-                AppointmentModel appointmentModel = new AppointmentModel(id, appointmentDate, doctors, patient);
+                AppointmentModel appointmentModel = new AppointmentModel();
+                appointmentModel.setId(result.getInt(1));
+                appointmentModel.setAppointmentDate(result.getString(2));
+                appointmentModel.setDoctorsId(result.getInt(3));
+                appointmentModel.setPatientId(result.getInt(4));
                 appointmentModels.add(appointmentModel);
                 appointmentModel.toString();
             }
@@ -94,6 +111,45 @@ public class AppointmentDao implements IAppointmentDao {
             return appointmentModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<AppointmentModel> getAllAppointments() {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            ArrayList<AppointmentModel> appointmentModels = new ArrayList<AppointmentModel>();
+            while (result.next()) {
+                AppointmentModel appointmentModel = new AppointmentModel();
+                appointmentModel.setId(result.getInt(1));
+                appointmentModel.setAppointmentDate(result.getString(2));
+                appointmentModel.setDoctorsId(result.getInt(3));
+                appointmentModel.setPatientId(result.getInt(4));
+                appointmentModels.add(appointmentModel);
+                appointmentModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return appointmentModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

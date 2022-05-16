@@ -28,4 +28,12 @@ public class MedicinesModel {
     public String getMedicineName() {
         return medicineName;
     }
+
+    @Override
+    public String toString() {
+        return "MedicinesModel{" +
+                "id=" + id +
+                ", medicineName='" + medicineName + '\'' +
+                '}';
+    }
 }

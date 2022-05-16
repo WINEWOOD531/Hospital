@@ -7,12 +7,11 @@ import java.util.List;
 
 public interface IAppointmentDao {
 
-    //void createAppointment(AppointmentModel appointmentModel);
-    void createAppointment(int id, String appointmentDate, int doctorsModelId, int patientModelId);
+    void createAppointment(AppointmentModel appointmentModel);
 
-    void updateAppointment(String appointmentDate,int id);
+    void updateAppointment(AppointmentModel appointmentModel);
 
-    void deleteAppointmentById(int id);
+    void deleteAppointmentById(AppointmentModel appointmentModel);
 
     List<AppointmentModel>  getAppointmentByDoctorId(int id);
 }

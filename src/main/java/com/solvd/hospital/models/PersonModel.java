@@ -1,7 +1,7 @@
 package com.solvd.hospital.models;
 
 
-public abstract class PersonModel {
+public  class PersonModel {
 
     private int id;
     private String firstName;
@@ -48,5 +48,15 @@ public abstract class PersonModel {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonModel{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }

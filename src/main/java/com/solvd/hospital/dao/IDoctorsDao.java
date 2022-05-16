@@ -8,10 +8,10 @@ import java.util.List;
 public interface IDoctorsDao {
 
     void createDoctor(DoctorsModel doctorsModel);
-//void createDoctor(int id,String availaibleDate,int personId);
-    void updateDoctor(String availaibleDate, int id);
 
-    void deleteDoctorById(int id);
+    void updateDoctor(DoctorsModel doctorsModel);
+
+    void deleteDoctorById(DoctorsModel doctorsModel);
 
     List<DoctorsModel> getDoctorByDate(String date);
 }

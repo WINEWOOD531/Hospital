@@ -3,7 +3,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 import com.solvd.hospital.dao.IBillDao;
 import com.solvd.hospital.models.BillModel;
 import com.solvd.hospital.models.PatientModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,60 +21,92 @@ public class BillDao implements IBillDao {
     final String insertStatementS = "INSERT INTO bill VALUES (?, ?,?,?)";
     final String updateStatementS = "UPDATE bill SET summ=? WHERE id=?";
 
+    private static final String GET_ALL = "SELECT * FROM bill";
+    PreparedStatement statement = null;
+    ResultSet result = null;
+
     @Override
-    public void createBill(int id, Double sum, String paymentDate, int patientId) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setDouble(2, sum);
-            stmt.setString(3, paymentDate);
-            stmt.setInt(4, patientId);
-            int i = stmt.executeUpdate();
+    public void createBill(BillModel billModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, billModel.getId());
+            statement.setDouble(2, billModel.getSum());
+            statement.setString(3, billModel.getPaymentDate());
+            statement.setInt(4, billModel.getPatient().getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateBill(Double sum, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setDouble(1, sum);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateBill(BillModel billModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setDouble(1, billModel.getSum());
+            statement.setInt(2, billModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteBillByPatientId(int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(deleteStatementS);
-            stmt.setInt(1, id);
-            int i = stmt.executeUpdate();
+    public void deleteBillByPatientId(BillModel billModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, billModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public List<BillModel> getBillByPatientId(int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PatientModel patient = new PatientModel();
-            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            ArrayList<BillModel> billModels = new ArrayList<BillModel>();
-            while (rs.next()) {
-                id = rs.getInt(1);
-                Double sum = rs.getDouble(2);
-                String paymentDate = rs.getString(3);
-                int patientId = rs.getInt(4);
-                BillModel billModel = new BillModel(id, sum, paymentDate, patient);
+    public List<BillModel> getAllBillsByPatientId(int id) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        PatientModel patient = new PatientModel();
+        ArrayList<BillModel> billModels = new ArrayList<BillModel>();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
+            statement.setInt(1, id);
+            result = statement.executeQuery();
+            while (result.next()) {
+                BillModel billModel = new BillModel();
+                billModel.setId(result.getInt(1));
+                billModel.setSum(result.getDouble(2));
+                billModel.setPaymentDate(result.getString(3));
+                billModel.setPatientId(result.getInt(4));
                 billModels.add(billModel);
                 billModel.toString();
             }
@@ -82,6 +114,46 @@ public class BillDao implements IBillDao {
             return billModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<BillModel> getAllBills() {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        PatientModel patient = new PatientModel();
+        ArrayList<BillModel> billModels = new ArrayList<BillModel>();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                BillModel billModel = new BillModel();
+                billModel.setId(result.getInt(1));
+                billModel.setSum(result.getDouble(2));
+                billModel.setPaymentDate(result.getString(3));
+                billModel.setPatientId(result.getInt(4));
+                billModels.add(billModel);
+                billModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return billModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

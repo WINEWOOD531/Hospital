@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface IMedicinesDao {
 
-    void createMedicines(int id, String medicineName);
+    void createMedicines(MedicinesModel medicinesModel);
 
-    void updateMedicines(String medicineName,int id);
+    void updateMedicines(MedicinesModel medicinesModel);
 
-    void deleteMedicinesById(int id);
+    void deleteMedicinesById(MedicinesModel medicinesModel);
 
     List<MedicinesModel>  getMedicinesByName(String medicineName);
 }

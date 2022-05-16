@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public interface ITestsDescriptionsDao {
 
-    void createTestsDescriptions(int id, String testDate, String testAnalysis, int testsId, int patientsId);
+    void createTestsDescriptions(TestsDescriptionsModel testsDescriptionsModel);
 
-    void updateTestsDescriptions(String text, int id);
+    void updateTestsDescriptions(TestsDescriptionsModel testsDescriptionsModel);
 
-    void deleteTestsDescriptionsById(int id);
+    void deleteTestsDescriptionsById(TestsDescriptionsModel testsDescriptionsModel);
 
     ArrayList<TestsDescriptionsModel> getTestsDescriptionsByTestId(int id);
 }

@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class RecordsModel {
+public class RecordsModel extends PatientModel{
 
     private int id;
     private String recordAnalysis;
@@ -15,7 +15,7 @@ public class RecordsModel {
         this.patient = patient;
     }
 
-    public void setId(int id) {
+    public void setRecordsId(int id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class RecordsModel {
         this.patient = patient;
     }
 
-    public int getId() {
+    public int getRecordsId() {
         return id;
     }
 
@@ -37,5 +37,14 @@ public class RecordsModel {
 
     public PatientModel getPatient() {
         return patient;
+    }
+
+    @Override
+    public String toString() {
+        return "RecordsModel{" +
+                "id=" + id +
+                ", recordAnalysis='" + recordAnalysis + '\'' +
+                ", patient=" + patient +
+                '}';
     }
 }

@@ -29,4 +29,12 @@ public class NursesModel extends PersonModel{
     public int getWorkExperience() {
         return workExperience;
     }
+
+    @Override
+    public String toString() {
+        return "NursesModel{" +
+                "id=" + id +
+                ", workExperience=" + workExperience +
+                '}';
+    }
 }

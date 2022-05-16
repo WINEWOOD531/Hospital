@@ -1,6 +1,6 @@
 package com.solvd.hospital.models;
 
-public class RoomsModel{
+public class RoomsModel extends PatientModel{
 
     private int id;
     private String roomNumber;
@@ -11,7 +11,16 @@ public class RoomsModel{
 
     public RoomsModel() {
     }
-
+/*    public RoomsModel(int id, String roomNumber, String departmentName,
+                      String dateIn, String dateOut,int patientId) {
+        this.id = id;
+        this.roomNumber = roomNumber;
+        this.departmentName = departmentName;
+        this.dateIn = dateIn;
+        this.dateOut = dateOut;
+        //this.patient = patient;
+        setId(patientId);
+    }*/
     public RoomsModel(int id, String roomNumber, String departmentName,
                       String dateIn, String dateOut, PatientModel patient) {
         this.id = id;
@@ -22,7 +31,7 @@ public class RoomsModel{
         this.patient = patient;
     }
 
-    public void setId(int id) {
+    public void setRoomsId(int id) {
         this.id = id;
     }
 
@@ -46,7 +55,7 @@ public class RoomsModel{
         this.patient = patient;
     }
 
-    public int getId() {
+    public int getRoomsId() {
         return id;
     }
 
@@ -68,5 +77,17 @@ public class RoomsModel{
 
     public PatientModel getPatient() {
         return patient;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomsModel{" +
+                "id=" + id +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", departmentName='" + departmentName + '\'' +
+                ", dateIn='" + dateIn + '\'' +
+                ", dateOut='" + dateOut + '\'' +
+                ", patient=" + patient +
+                '}';
     }
 }

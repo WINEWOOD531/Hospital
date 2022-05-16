@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface IExpertInDao {
 
-    void createExpertIn(int id,int doctorsId,int specializationId);
+    void createExpertIn(ExpertInModel expertInModel);
 
-    void updateExpertIn(int specializationId,int id);
+    void updateExpertIn(ExpertInModel expertInModel);
 
-    void deleteExpertInById(int id);
+    void deleteExpertInById(ExpertInModel expertInModel);
 
-    List<ExpertInModel> getExpertInBySpecializationId(int id);
+    List<ExpertInModel> getAllExpertInBySpecializationId(int id);
 }

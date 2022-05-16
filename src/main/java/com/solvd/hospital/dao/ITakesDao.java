@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public interface ITakesDao {
 
-    void createTakes(int id,Double quantiti, String takesDate, int medicinessId, int patientsId);
+    void createTakes(TakesModel takesModel);
 
-    void updateTakes(Double quantiti,int id);
+    void updateTakes(TakesModel takesModel);
 
-    void deleteTakesById(int id);
+    void deleteTakesById(TakesModel takesModel);
 
     ArrayList<TakesModel> getTakesByMedicineId(int id);
 }

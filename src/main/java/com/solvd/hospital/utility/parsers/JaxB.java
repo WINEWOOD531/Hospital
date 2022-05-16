@@ -1,18 +1,8 @@
 package com.solvd.hospital.utility.parsers;
 
-import com.solvd.hospital.Patient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-
 public class JaxB {
 
-    public static void writeToXML() throws JAXBException {
+    /*public static void writeToXML() throws JAXBException {
         final Logger LOGGER = LogManager.getLogger(JaxB.class);
         Patient patient = new Patient(3, 27, "A", "F", "KO777125");
         File file = new File("src/main/resources/xml/JaxbEmpty.xml");
@@ -25,9 +15,9 @@ public class JaxB {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public static void readFromXML() {
+/*    public static void readFromXML() {
         final Logger LOGGER = LogManager.getLogger(JaxB.class);
         File file = new File("src/main/resources/xml/JaxbFull.xml");
         try {
@@ -38,6 +28,6 @@ public class JaxB {
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

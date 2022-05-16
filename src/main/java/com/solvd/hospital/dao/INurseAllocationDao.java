@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public interface INurseAllocationDao {
 
-    void createNurseAllocation(int id,String dateIn,String dateOut,int nursesId,int doctorsId,int personId);
+    void createNurseAllocation(NurseAllocationModel nurseAllocationModel);
 
-    void updateNursesAllocation(String dateIn,int id);
+    void updateNursesAllocation(NurseAllocationModel nurseAllocationModel);
 
-    void deleteNursesAllocationById(int id);
+    void deleteNursesAllocationById(NurseAllocationModel nurseAllocationModel);
 
     ArrayList<NurseAllocationModel> getNurseAllocationById(int id);
 

@@ -1,4 +1,4 @@
-package com.solvd.hospital;
+package com.solvd.hospital.utility.parsers;
 
 import javax.xml.bind.annotation.*;
 

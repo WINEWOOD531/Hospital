@@ -6,11 +6,12 @@ import java.util.List;
 
 public interface IBillDao {
 
-    void createBill(int id,Double sum,String paymentDate,int patientId);
 
-    void updateBill(Double sum, int id);
+    void createBill(BillModel billModel);
 
-    void deleteBillByPatientId(int id);
+    void updateBill(BillModel billModel);
 
-    List<BillModel> getBillByPatientId(int id);
+    void deleteBillByPatientId(BillModel billModel);
+
+    List<BillModel> getAllBillsByPatientId(int id);
 }

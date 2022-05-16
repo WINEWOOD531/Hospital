@@ -1,8 +1,10 @@
 package com.solvd.hospital.models;
 
-public class TestsDescriptionsModel {
+public class TestsDescriptionsModel extends TestsModel{
 
     private int id;
+    private int testsId;
+    private int patientId;
     private String testDate;
     private String testAnalysis;
     private TestsModel tests;
@@ -22,6 +24,14 @@ public class TestsDescriptionsModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setTestsId(int testsId) {
+        this.testsId = testsId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public void setTestDate(String testDate) {
@@ -44,6 +54,14 @@ public class TestsDescriptionsModel {
         return id;
     }
 
+    public int getTestsId() {
+        return testsId;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
     public String getTestDate() {
         return testDate;
     }
@@ -58,5 +76,16 @@ public class TestsDescriptionsModel {
 
     public PatientModel getPatient() {
         return patient;
+    }
+
+    @Override
+    public String toString() {
+        return "TestsDescriptionsModel{" +
+                "id=" + id +
+                ", testDate='" + testDate + '\'' +
+                ", testAnalysis='" + testAnalysis + '\'' +
+                ", tests=" + tests +
+                ", patient=" + patient +
+                '}';
     }
 }

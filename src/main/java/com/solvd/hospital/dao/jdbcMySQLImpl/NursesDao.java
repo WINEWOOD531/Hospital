@@ -2,7 +2,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.INursesDao;
 import com.solvd.hospital.models.NursesModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,69 +18,91 @@ public class NursesDao implements INursesDao {
     final String getStatement = "SELECT * FROM Nurses WHERE workExperience > ?";
     final String insertStatementS = "INSERT INTO Nurses VALUES (?, ?,?)";
     final String updateStatementS = "UPDATE Nurses SET workExperience=? WHERE id=?";
+    final String INNERJOIN = "SELECT Nurses.id,Nurses.workExperience,person.id, person.firstName," +
+            " person.lastName FROM Nurses INNER JOIN person ON Nurses.Person_id = person.id";
+    private static final String GET_ALL = "SELECT * FROM Nurses";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createNurse(int id, int personId, int workExperience) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setInt(2, personId);
-            stmt.setInt(3, workExperience);
-            int i = stmt.executeUpdate();
+    public void createNurse(NursesModel nursesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, nursesModel.getId());
+            statement.setInt(2, nursesModel.getPersonId());
+            statement.setInt(3, nursesModel.getWorkExperience());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateNurse(int workExperience, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setInt(1, workExperience);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateNurse(NursesModel nursesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setInt(1, nursesModel.getWorkExperience());
+            statement.setInt(2, nursesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteNurseById(int id) {
-        int x = 0;
+    public void deleteNurseById(NursesModel nursesModel) {
         Connection dbConnect = DataBaseConnection.getConnection();
-        PreparedStatement deleteStatement = null;
         try {
-            deleteStatement = dbConnect.prepareStatement(deleteStatementS);
-            deleteStatement.setInt(1, id);
-            int i = deleteStatement.executeUpdate();
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, nursesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (SQLException e) {
             LOGGER.error("ERROR DELETE Nurses WITH ID " + e.getMessage());
-            x = 1;
         } finally {
-            DataBaseConnection.close(deleteStatement);
-            DataBaseConnection.close(dbConnect);
-            if (x == 0) {
-                LOGGER.info("SUCCESS CLOSE");
-            } else
-                LOGGER.info("FAIL CLOSE");
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<NursesModel> getNurseByIdWorkExperience(int workExperience) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
-            stmt.setInt(1, workExperience);
-            ResultSet rs = stmt.executeQuery();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
+            statement.setInt(1, workExperience);
+            result = statement.executeQuery();
             ArrayList<NursesModel> nursesModels = new ArrayList<>();
-            while (rs.next()) {
-                int personId = rs.getInt(2);
-                int id = rs.getInt(1);
-                workExperience = rs.getInt(3);
-                NursesModel nursesModel = new NursesModel(personId, id, workExperience);
+            while (result.next()) {
+                NursesModel nursesModel = new NursesModel();
+                nursesModel.setId(result.getInt("id"));
+                nursesModel.setWorkExperience(result.getInt("workExperience"));
+                nursesModel.setPersonId(result.getInt("Person_id"));
                 nursesModels.add(nursesModel);
                 nursesModel.toString();
             }
@@ -88,9 +110,78 @@ public class NursesDao implements INursesDao {
             return nursesModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
 
+    public List<NursesModel> getAllNurses() {
+        ArrayList<NursesModel> nursesModels = new ArrayList<>();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                NursesModel nursesModel = new NursesModel();
+                nursesModel.setId(result.getInt("id"));
+                nursesModel.setWorkExperience(result.getInt("workExperience"));
+                nursesModel.setPersonId(result.getInt("Person_id"));
+                nursesModels.add(nursesModel);
+                nursesModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return nursesModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<NursesModel> getAllNursesJoinPerson() {
+        ArrayList<NursesModel> nursesModels = new ArrayList<>();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(INNERJOIN);
+            result = statement.executeQuery();
+            while (result.next()) {
+                NursesModel nursesModel = new NursesModel();
+                nursesModel.setId(result.getInt("id"));
+                nursesModel.setWorkExperience(result.getInt("workExperience"));
+                nursesModel.setPersonId(result.getInt("person.id"));
+                nursesModel.setFirstName(result.getString("person.firstName"));
+                nursesModel.setLastName(result.getString("person.lastName"));
+                nursesModels.add(nursesModel);
+                nursesModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return nursesModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

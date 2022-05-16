@@ -3,11 +3,12 @@ package com.solvd.hospital.models;
 public class BillModel {
 
     private int id;
+    private int patientId;
     private Double sum;
     private String paymentDate;
     private PatientModel patient;
 
-    public BillModel(int id, Double sum, String paymentDate, int patientId) {
+    public BillModel() {
     }
 
     public BillModel(int id, Double sum, String paymentDate, PatientModel patient) {
@@ -17,8 +18,12 @@ public class BillModel {
         this.patient = patient;
     }
 
-    public void setPersonId(int id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public void setSum(Double sum) {
@@ -33,8 +38,12 @@ public class BillModel {
         this.patient = patient;
     }
 
-    public int getPersonId() {
+    public int getId() {
         return id;
+    }
+
+    public int getPatientId() {
+        return patientId;
     }
 
     public Double getSum() {
@@ -47,5 +56,16 @@ public class BillModel {
 
     public PatientModel getPatient() {
         return patient;
+    }
+
+    @Override
+    public String toString() {
+        return "BillModel{" +
+                "id=" + id +
+                ", patientId=" + patientId +
+                ", sum=" + sum +
+                ", paymentDate='" + paymentDate + '\'' +
+                ", patient=" + patient +
+                '}';
     }
 }

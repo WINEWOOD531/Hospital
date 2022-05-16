@@ -17,11 +17,23 @@ public class SpecializationModel {
         this.id = id;
     }
 
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
     public int getId() {
         return id;
     }
 
     public String getSpecialization() {
         return specialization;
+    }
+
+    @Override
+    public String toString() {
+        return "SpecializationModel{" +
+                "id=" + id +
+                ", specialization='" + specialization + '\'' +
+                '}';
     }
 }

@@ -5,7 +5,7 @@ import com.solvd.hospital.models.DoctorsModel;
 import com.solvd.hospital.models.NurseAllocationModel;
 import com.solvd.hospital.models.NursesModel;
 import com.solvd.hospital.models.PatientModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,68 +19,95 @@ public class NurseAllocationDao implements INurseAllocationDao {
     final String getStatement = "SELECT * FROM nurseallocation WHERE Nurses_id = ?";
     final String insertStatementS = "INSERT INTO nurseallocation VALUES (?, ?, ?,?,?,?)";
     final String updateStatementS = "UPDATE nurseallocation SET dateIn=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM nurseallocation";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createNurseAllocation(int id, String dateIn, String dateOut, int nursesId, int doctorsId, int personId) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setString(2, dateIn);
-            stmt.setString(3, dateOut);
-            stmt.setInt(4, nursesId);
-            stmt.setInt(5, doctorsId);
-            stmt.setInt(6, personId);
-            int i = stmt.executeUpdate();
+    public void createNurseAllocation(NurseAllocationModel nurseAllocationModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, nurseAllocationModel.getId());
+            statement.setString(2, nurseAllocationModel.getDateIn());
+            statement.setString(3, nurseAllocationModel.getDateOut());
+            statement.setInt(4, nurseAllocationModel.getNurses().getId());
+            statement.setInt(5, nurseAllocationModel.getDoctors().getId());
+            statement.setInt(6, nurseAllocationModel.getPatient().getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateNursesAllocation(String dateIn, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setString(1, dateIn);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateNursesAllocation(NurseAllocationModel nurseAllocationModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setString(1, nurseAllocationModel.getDateIn());
+            statement.setInt(2, nurseAllocationModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteNursesAllocationById(int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(deleteStatementS);
-            stmt.setInt(1, id);
-            int i = stmt.executeUpdate();
+    public void deleteNursesAllocationById(NurseAllocationModel nurseAllocationModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, nurseAllocationModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public ArrayList<NurseAllocationModel> getNurseAllocationById(int id) {
         ArrayList<NurseAllocationModel> nurseAllocationModels = new ArrayList<NurseAllocationModel>();
-        DoctorsModel doctors = new DoctorsModel();
-        PatientModel patient = new PatientModel();
-        NursesModel nurses = new NursesModel();
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt(1);
-                String dateIn = rs.getString(2);
-                String dateOut = rs.getString(3);
-                int nursesId = rs.getInt(4);
-                int doctorsId = rs.getInt(5);
-                int patientId = rs.getInt(6);
-                NurseAllocationModel nurseAllocationModel = new NurseAllocationModel(id, dateIn,
-                        dateOut, nurses, doctors, patient);
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
+            statement.setInt(1, id);
+            result = statement.executeQuery();
+            while (result.next()) {
+                NurseAllocationModel nurseAllocationModel = new NurseAllocationModel();
+                nurseAllocationModel.setId(result.getInt(1));
+                nurseAllocationModel.setDateIn(result.getString(2));
+                nurseAllocationModel.setDateOut(result.getString(3));
+                nurseAllocationModel.setNursesId(result.getInt(4));
+                nurseAllocationModel.setDoctorsId(result.getInt(5));
+                nurseAllocationModel.setPatientId(result.getInt(6));
                 nurseAllocationModels.add(nurseAllocationModel);
                 nurseAllocationModel.toString();
             }
@@ -88,9 +115,49 @@ public class NurseAllocationDao implements INurseAllocationDao {
             return nurseAllocationModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
+    public ArrayList<NurseAllocationModel> getAllNurseAllocations() {
+        ArrayList<NurseAllocationModel> nurseAllocationModels = new ArrayList<NurseAllocationModel>();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                NurseAllocationModel nurseAllocationModel = new NurseAllocationModel();
+                nurseAllocationModel.setId(result.getInt(1));
+                nurseAllocationModel.setDateIn(result.getString(2));
+                nurseAllocationModel.setDateOut(result.getString(3));
+                nurseAllocationModel.setNursesId(result.getInt(4));
+                nurseAllocationModel.setDoctorsId(result.getInt(5));
+                nurseAllocationModel.setPatientId(result.getInt(6));
+                nurseAllocationModels.add(nurseAllocationModel);
+                nurseAllocationModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return nurseAllocationModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

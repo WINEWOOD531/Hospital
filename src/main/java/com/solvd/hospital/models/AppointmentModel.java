@@ -3,6 +3,8 @@ package com.solvd.hospital.models;
 public class AppointmentModel {
 
     private int id;
+    private int doctorsId;
+    private int patientId;
     private String appointmentDate;
     private DoctorsModel doctors;
     private PatientModel patient;
@@ -12,6 +14,10 @@ public class AppointmentModel {
     }
 
     public AppointmentModel(int id, String appointmentDate, int doctorsModelId, int patientModelId) {
+        this.id = id;
+        this.appointmentDate = appointmentDate;
+        this.doctorsId=doctorsModelId;
+        this.patientId=patientModelId;
     }
 
     public AppointmentModel(int id, String appointmentDate, DoctorsModel doctors, PatientModel patient) {
@@ -24,6 +30,14 @@ public class AppointmentModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setDoctorsId(int doctorsId) {
+        this.doctorsId = doctorsId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
     }
 
     public void setAppointmentDate(String appointmentDate) {
@@ -42,6 +56,14 @@ public class AppointmentModel {
         return id;
     }
 
+    public int getDoctorsId() {
+        return doctorsId;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
     public String getAppointmentDate() {
         return appointmentDate;
     }
@@ -52,5 +74,17 @@ public class AppointmentModel {
 
     public PatientModel getPatient() {
         return patient;
+    }
+
+    @Override
+    public String toString() {
+        return "AppointmentModel{" +
+                "id=" + id +
+                ", doctorsId=" + doctorsId +
+                ", patientId=" + patientId +
+                ", appointmentDate='" + appointmentDate + '\'' +
+                ", doctors=" + doctors +
+                ", patient=" + patient +
+                '}';
     }
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ISpecializationDao {
 
-    void createSpecialization(int id, String medicineName);
+    void createSpecialization(SpecializationModel specializationModel);
 
-    void updateSpecialization(String specializationName, int id);
+    void updateSpecialization(SpecializationModel specializationModel);
 
-    void deleteSpecializationById(int id);
+    void deleteSpecializationById(SpecializationModel specializationModel);
 
     List<SpecializationModel> getSpecializationByName(String name);
 

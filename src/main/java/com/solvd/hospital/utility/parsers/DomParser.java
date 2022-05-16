@@ -20,7 +20,7 @@ import java.io.File;
 public class DomParser {
     private static final Logger LOGGER = LogManager.getLogger(DomParser.class);
 
-    public static void writeToXML() {
+   /* public static void writeToXML() {
         PatientModel patientForEmpty = new PatientModel();
         patientForEmpty.setPersonId(1);
         patientForEmpty.setAge(27);
@@ -74,9 +74,9 @@ public class DomParser {
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
         }
-    }
+    }*/
 
-    public static void readFromXML() {
+    /*public static void readFromXML() {
         PatientModel patientForFull = new PatientModel();
         try {
             String filePath = "src/main/resources/xml/Full.xml";
@@ -120,5 +120,5 @@ public class DomParser {
         }
         LOGGER.info("Id: " + patientForFull.getId() + "\n" + "Age: " + patientForFull.getAge() + "\n" + "BloodGroup: " +
                 patientForFull.getBloodGroup() + "\n" + "Sex: " + patientForFull.getSex());
-    }
+    }*/
 }

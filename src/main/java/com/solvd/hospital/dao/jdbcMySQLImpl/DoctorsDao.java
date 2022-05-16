@@ -2,7 +2,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IDoctorsDao;
 import com.solvd.hospital.models.DoctorsModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,81 +18,89 @@ public class DoctorsDao implements IDoctorsDao {
     final String getStatement = "SELECT * FROM Doctors WHERE availaibleDate LIKE ? ESCAPE '!'";
     final String insertStatementS = "INSERT INTO Doctors VALUES (?, ?, ?)";
     final String updateStatementS = "UPDATE Doctors SET availaibleDate=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM Doctors";
+    final String INNERJOIN = "SELECT doctors.id,doctors.availaibleDate,person.id, person.firstName, person.lastName " +
+            "FROM doctors INNER JOIN person ON doctors.Person_id = person.id";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
     public void createDoctor(DoctorsModel doctorsModel) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, doctorsModel.getId());
-            stmt.setString(2, doctorsModel.getAvailableDate());
-            stmt.setInt(3, doctorsModel.getPersonId());
-            int i = stmt.executeUpdate();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, doctorsModel.getId());
+            statement.setString(2, doctorsModel.getAvailableDate());
+            statement.setInt(3, doctorsModel.getPersonId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateDoctor(String availaibleDate, int id) {
+    public void updateDoctor(DoctorsModel doctorsModel) {
         Connection dbConnect = DataBaseConnection.getConnection();
-        PreparedStatement updateStatement = null;
-        int x = 0;
         try {
-            updateStatement = dbConnect.prepareStatement(updateStatementS);
-            updateStatement.setString(1, availaibleDate);
-            updateStatement.setInt(2, id);
-            updateStatement.executeUpdate();
-
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setString(1, doctorsModel.getAvailableDate());
+            statement.setInt(2, doctorsModel.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("ERROR UPDATE CLIENTS " + e.getMessage());
-            x = 1;
         } finally {
-            DataBaseConnection.close(updateStatement);
-            DataBaseConnection.close(dbConnect);
-            if (x == 0) {
-                LOGGER.info("SUCCESS CLOSE");
-            } else
-                LOGGER.info("FAIL CLOSE");
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     @Override
-    public void deleteDoctorById(int id) {
-        int x = 0;
+    public void deleteDoctorById(DoctorsModel doctorsModel) {
         Connection dbConnect = DataBaseConnection.getConnection();
-        PreparedStatement deleteStatement = null;
         try {
-            deleteStatement = dbConnect.prepareStatement(deleteStatementS);
-            deleteStatement.setInt(1, id);
-            deleteStatement.executeUpdate();
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, doctorsModel.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("ERROR DELETE Doctor WITH ID " + e.getMessage());
-            x = 1;
         } finally {
-            DataBaseConnection.close(deleteStatement);
-            DataBaseConnection.close(dbConnect);
-            if (x == 0) {
-                LOGGER.info("SUCCESS CLOSE");
-            } else
-                LOGGER.info("FAIL CLOSE");
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     @Override
     public List<DoctorsModel> getDoctorByDate(String date) {
         ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
-        try (Connection con = DataBaseConnection.getConnection()) {
-            PreparedStatement statement = con.prepareStatement(getStatement);
+        Connection con = DataBaseConnection.getConnection();
+        try {
+            statement = con.prepareStatement(getStatement);
             statement.setString(1, date + "%");
-            ResultSet result = statement.executeQuery();
+            result = statement.executeQuery();
             while (result.next()) {
-                int id = result.getInt("Person_id");
-                String availaibleDate = result.getString("availaibleDate");
-                int personId = result.getInt("id");
-                DoctorsModel doctors = new DoctorsModel(id, availaibleDate, personId);
+                DoctorsModel doctors = new DoctorsModel();
+                doctors.setId(result.getInt("id"));
+                doctors.setAvailableDate(result.getString("availaibleDate"));
+                doctors.setPersonId(result.getInt("Person_id"));
                 doctorsModels.add(doctors);
                 doctors.toString();
             }
@@ -100,6 +108,74 @@ public class DoctorsDao implements IDoctorsDao {
             return doctorsModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(con);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<DoctorsModel> getALLDoctors() {
+        ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
+        Connection con = DataBaseConnection.getConnection();
+        try {
+            statement = con.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                DoctorsModel doctors = new DoctorsModel();
+                doctors.setId(result.getInt("id"));
+                doctors.setAvailableDate(result.getString("availaibleDate"));
+                doctors.setPersonId(result.getInt("Person_id"));
+                doctorsModels.add(doctors);
+            }
+            LOGGER.info("ALL is OK!");
+            return doctorsModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(con);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<DoctorsModel> getALLDoctorsJoinPerson() {
+        ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
+        Connection con = DataBaseConnection.getConnection();
+        try {
+            statement = con.prepareStatement(INNERJOIN);
+            result = statement.executeQuery();
+            while (result.next()) {
+                DoctorsModel doctors = new DoctorsModel();
+                doctors.setId(result.getInt("id"));
+                doctors.setAvailableDate(result.getString("availaibleDate"));
+                doctors.setPersonId(result.getInt("person.id"));
+                doctors.setFirstName(result.getString("person.firstName"));
+                doctors.setLastName(result.getString("person.lastName"));
+                doctorsModels.add(doctors);
+            }
+            LOGGER.info("ALL is OK!");
+            return doctorsModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(con);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

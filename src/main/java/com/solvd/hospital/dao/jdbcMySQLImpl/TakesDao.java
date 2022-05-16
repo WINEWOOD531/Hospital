@@ -1,10 +1,8 @@
 package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.ITakesDao;
-import com.solvd.hospital.models.MedicinesModel;
-import com.solvd.hospital.models.PatientModel;
 import com.solvd.hospital.models.TakesModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,64 +17,93 @@ public class TakesDao implements ITakesDao {
     final String getStatement = "SELECT * FROM takes WHERE Medicines_id = ?";
     final String insertStatementS = "INSERT INTO takes VALUES (?, ?, ?,?,?)";
     final String updateStatementS = "UPDATE takes SET quantiti=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM takes";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createTakes(int id, Double quantiti, String takesDate, int medicinessId, int patientsId) {
-        try (Connection con = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setDouble(2, quantiti);
-            stmt.setString(3, takesDate);
-            stmt.setInt(4, medicinessId);
-            stmt.setInt(5, patientsId);
-            int i = stmt.executeUpdate();
+    public void createTakes(TakesModel takesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, takesModel.getId());
+            statement.setDouble(2, takesModel.getQuantity());
+            statement.setString(3, takesModel.getTakesDate());
+            statement.setInt(4, takesModel.getMedicines().getId());
+            statement.setInt(5, takesModel.getPatient().getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateTakes(Double quantiti, int id) {
-        try (Connection con = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(updateStatementS);
-            stmt.setDouble(1, quantiti);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateTakes(TakesModel takesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setDouble(1, takesModel.getQuantity());
+            statement.setInt(2, takesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteTakesById(int id) {
-        try (Connection con = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(deleteStatementS);
-            stmt.setInt(1, id);
-            int i = stmt.executeUpdate();
+    public void deleteTakesById(TakesModel takesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, takesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public ArrayList<TakesModel> getTakesByMedicineId(int id) {
-        ArrayList<TakesModel>takesModels= new ArrayList<>();
-        MedicinesModel medicinesModel= new MedicinesModel();
-        PatientModel patient = new PatientModel();
-        try (Connection con = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(getStatement);
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt(1);
-                Double quantiti = rs.getDouble(2);
-                String takesDate = rs.getString(3);
-                int medicinesId = rs.getInt(4);
-                int patientId = rs.getInt(5);
-                TakesModel takesModel= new TakesModel(id,quantiti,takesDate,medicinesModel,patient);
+        ArrayList<TakesModel> takesModels = new ArrayList<>();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
+            statement.setInt(1, id);
+            result = statement.executeQuery();
+            while (result.next()) {
+                TakesModel takesModel = new TakesModel();
+                takesModel.setId(result.getInt(1));
+                takesModel.setQuantity(result.getDouble(2));
+                takesModel.setTakesDate(result.getString(3));
+                takesModel.setMedicinesId(result.getInt("Medicines_id"));
+                takesModel.setPatientId(result.getInt("Patient_id"));
                 takesModels.add(takesModel);
                 takesModel.toString();
             }
@@ -84,6 +111,46 @@ public class TakesDao implements ITakesDao {
             return takesModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<TakesModel> getAllTakes() {
+        ArrayList<TakesModel> takesModels = new ArrayList<>();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                TakesModel takesModel = new TakesModel();
+                takesModel.setId(result.getInt(1));
+                takesModel.setQuantity(result.getDouble(2));
+                takesModel.setTakesDate(result.getString(3));
+                takesModel.setMedicinesId(result.getInt("Medicines_id"));
+                takesModel.setPatientId(result.getInt("Patient_id"));
+                takesModels.add(takesModel);
+                takesModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return takesModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

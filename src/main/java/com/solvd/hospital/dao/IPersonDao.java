@@ -5,11 +5,11 @@ import java.util.List;
 
 public interface IPersonDao {
 
-    void createPerson(int id, String firstName, String lastName, String phoneNumber);
+    void createPerson(PersonModel personModel);
 
-    void updatePerson(String phoneNumber, int id);
+    void updatePerson(PersonModel personModel);
 
-    void deletePersonById(int id);
+    void deletePersonById(PersonModel personModel);
 
     List<PersonModel> getPersonByName(String name);
 }

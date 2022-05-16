@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ITestsDao {
 
-    void createTests(int id, String medicineName);
+    void createTests(TestsModel testsModel);
 
-    void updateTests(String testName,int id);
+    void updateTests(TestsModel testsModel);
 
-    void deleteTestsById(int id);
+    void deleteTestsById(TestsModel testsModel);
 
     List<TestsModel> getTestsByName(String name);
 

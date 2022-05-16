@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface INursesDao {
 
-    void createNurse(int id,int personId,int  workExperience);
+    void createNurse(NursesModel nursesModel);
 
-    void updateNurse(int workExperience,int id);
+    void updateNurse(NursesModel nursesModel);
 
-    void deleteNurseById(int id);
+    void deleteNurseById(NursesModel nursesModel);
 
     List<NursesModel> getNurseByIdWorkExperience(int workExperience);
 }

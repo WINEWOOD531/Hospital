@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public interface IRoomsDao {
 
-    void createRoom(int id, String roomNumber, String departmentName, String dateIn, String dateOut, int patientId);
+    void createRoom(RoomsModel roomsModel);
 
-    void updateRoom(String dateIn, int id);
+    void updateRoom(RoomsModel roomsModel);
 
-    void deleteRoomById(int id);
+    void deleteRoomById(RoomsModel roomsModel);
 
     ArrayList<RoomsModel> getRoomByDepartmentName(String name);
 }

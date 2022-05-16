@@ -1,18 +1,19 @@
-package com.solvd.hospital.utility.parsers;
+package com.solvd.hospital.utility.connection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ResourceBundle;
 
 
 public class DataBaseConnection {
     private static final Logger LOGGER = LogManager.getLogger(DataBaseConnection.class);
-
+    ResourceBundle resource = ResourceBundle.getBundle("db");
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DBURL = "jdbc:mysql://localhost/hospital";
-    private static final String USER = "root";
-    private static final String PASS = "Winewood*531*";
+    String USER = resource.getString("db.username");
+    String PASS = resource.getString("db.password");
+    String DBURL = resource.getString("db.url");
 
     private static DataBaseConnection singleInstance = new DataBaseConnection();
 

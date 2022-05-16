@@ -3,7 +3,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 import com.solvd.hospital.dao.ITestsDao;
 
 import com.solvd.hospital.models.TestsModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,56 +20,87 @@ public class TestsDao implements ITestsDao {
     final String getStatement = "SELECT * FROM Tests WHERE testName LIKE ? ESCAPE '!'";
     final String insertStatementS = "INSERT INTO Tests VALUES (?, ?)";
     final String updateStatementS = "UPDATE Tests SET testName=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM Tests";
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createTests(int id, String medicineName) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setString(2, medicineName);
-            int i = stmt.executeUpdate();
+    public void createTests(TestsModel testsModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, testsModel.getId());
+            statement.setString(2, testsModel.getTestName());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateTests(String testName, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setString(1, testName);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateTests(TestsModel testsModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setString(1, testsModel.getTestName());
+            statement.setInt(2, testsModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteTestsById(int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(deleteStatementS);
-            stmt.setInt(1, id);
-            int i = stmt.executeUpdate();
+    public void deleteTestsById(TestsModel testsModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, testsModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<TestsModel> getTestsByName(String name) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
-            stmt.setString(1, name + "%");
-            ResultSet rs = stmt.executeQuery();
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(getStatement);
+            statement.setString(1, name + "%");
+            result = statement.executeQuery();
             ArrayList<TestsModel> testsModels = new ArrayList<TestsModel>();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                name = rs.getString(2);
-                TestsModel testsModel = new TestsModel(id, name);
+            while (result.next()) {
+                TestsModel testsModel = new TestsModel();
+                testsModel.setId(result.getInt("id"));
+                testsModel.setTestName(result.getString("testName"));
                 testsModels.add(testsModel);
                 testsModel.toString();
             }
@@ -77,9 +108,45 @@ public class TestsDao implements ITestsDao {
             return testsModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
+    public List<TestsModel> getAllTests() {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            ArrayList<TestsModel> testsModels = new ArrayList<TestsModel>();
+            while (result.next()) {
+                TestsModel testsModel = new TestsModel();
+                testsModel.setId(result.getInt("id"));
+                testsModel.setTestName(result.getString("testName"));
+                testsModels.add(testsModel);
+                testsModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return testsModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

@@ -7,7 +7,9 @@ public class TestsModel {
 
     public TestsModel() {
     }
-
+    public TestsModel(int id) {
+        this.id = id;
+    }
     public TestsModel(int id, String testName) {
         this.id = id;
         this.testName = testName;
@@ -27,5 +29,13 @@ public class TestsModel {
 
     public String getTestName() {
         return testName;
+    }
+
+    @Override
+    public String toString() {
+        return "TestsModel{" +
+                "id=" + id +
+                ", testName='" + testName + '\'' +
+                '}';
     }
 }

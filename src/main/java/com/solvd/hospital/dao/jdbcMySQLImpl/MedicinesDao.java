@@ -3,7 +3,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 import com.solvd.hospital.dao.IMedicinesDao;
 
 import com.solvd.hospital.models.MedicinesModel;
-import com.solvd.hospital.utility.parsers.DataBaseConnection;
+import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,56 +19,88 @@ public class MedicinesDao implements IMedicinesDao {
     final String getStatement = "SELECT * FROM Medicines WHERE medicineName LIKE ? ESCAPE '!'";
     final String insertStatementS = "INSERT INTO Medicines VALUES (?, ?)";
     final String updateStatementS = "UPDATE Medicines SET medicineName=? WHERE id=?";
+    private static final String GET_ALL = "SELECT * FROM Medicines ORDER BY id";
+
+    PreparedStatement statement = null;
+    ResultSet result = null;
 
     @Override
-    public void createMedicines(int id, String medicineName) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(insertStatementS);
-            stmt.setInt(1, id);
-            stmt.setString(2, medicineName);
-            int i = stmt.executeUpdate();
+    public void createMedicines(MedicinesModel medicinesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(insertStatementS);
+            statement.setInt(1, medicinesModel.getId());
+            statement.setString(2, medicinesModel.getMedicineName());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void updateMedicines(String medicineName, int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(updateStatementS);
-            stmt.setString(1, medicineName);
-            stmt.setInt(2, id);
-            int i = stmt.executeUpdate();
+    public void updateMedicines(MedicinesModel medicinesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(updateStatementS);
+            statement.setString(1, medicinesModel.getMedicineName());
+            statement.setInt(2, medicinesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records updated");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void deleteMedicinesById(int id) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(deleteStatementS);
-            stmt.setInt(1, id);
-            int i = stmt.executeUpdate();
+    public void deleteMedicinesById(MedicinesModel medicinesModel) {
+        Connection dbConnect = DataBaseConnection.getConnection();
+        try {
+            statement = dbConnect.prepareStatement(deleteStatementS);
+            statement.setInt(1, medicinesModel.getId());
+            int i = statement.executeUpdate();
             LOGGER.info(i + " records deleted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<MedicinesModel> getMedicinesByName(String medicineName) {
-        try (Connection dbConnect = DataBaseConnection.getConnection()) {
-            PreparedStatement stmt = dbConnect.prepareStatement(getStatement);
-            stmt.setString(1, medicineName + "%");
-            ResultSet rs = stmt.executeQuery();
-            ArrayList<MedicinesModel> medicinesModels = new ArrayList<MedicinesModel>();
-            while (rs.next()) {
-                int id = rs.getInt(1);
-                medicineName = rs.getString(2);
-                MedicinesModel medicinesModel = new MedicinesModel(id, medicineName);
+        Connection con = DataBaseConnection.getConnection();
+        ArrayList<MedicinesModel> medicinesModels = new ArrayList<MedicinesModel>();
+        try {
+            statement = con.prepareStatement(getStatement);
+            statement.setString(1, medicineName + "%");
+            result = statement.executeQuery();
+            while (result.next()) {
+                MedicinesModel medicinesModel = new MedicinesModel();
+                medicinesModel.setId(result.getInt("id"));
+                medicinesModel.setMedicineName(result.getString("medicineName"));
                 medicinesModels.add(medicinesModel);
                 medicinesModel.toString();
             }
@@ -76,9 +108,45 @@ public class MedicinesDao implements IMedicinesDao {
             return medicinesModels;
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(con);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
 
+    public List<MedicinesModel> getAllMedicines() {
+        Connection con = DataBaseConnection.getConnection();
+        ArrayList<MedicinesModel> medicinesModels = new ArrayList<MedicinesModel>();
+        try {
+            statement = con.prepareStatement(GET_ALL);
+            result = statement.executeQuery();
+            while (result.next()) {
+                MedicinesModel medicinesModel = new MedicinesModel();
+                medicinesModel.setId(result.getInt("id"));
+                medicinesModel.setMedicineName(result.getString("medicineName"));
+                medicinesModels.add(medicinesModel);
+                medicinesModel.toString();
+            }
+            LOGGER.info("ALL is OK!");
+            return medicinesModels;
+        } catch (Exception e) {
+            LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(con);
+                statement.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

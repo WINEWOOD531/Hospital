@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public interface IPatientDao {
 
-    void createPatient(int id,int age,String bloodGroup,String sex,int personId);
+    void createPatient(PatientModel patientModel);
 
-    void updatePatient(String bloodGroup,int id);
+    void updatePatient(PatientModel patientModel);
 
-    void deletePatientById(int id);
+    void deletePatientById(PatientModel patientModel);
 
     ArrayList<PatientModel> getPatientByAge(int age);
 }

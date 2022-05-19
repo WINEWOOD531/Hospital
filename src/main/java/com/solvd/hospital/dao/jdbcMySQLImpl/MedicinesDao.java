@@ -11,12 +11,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MedicinesDao implements IMedicinesDao {
 
     private static final Logger LOGGER = LogManager.getLogger(MedicinesDao.class);
     final String deleteStatementS = "DELETE FROM Medicines WHERE id=?";
-    final String getStatement = "SELECT * FROM Medicines WHERE medicineName LIKE ? ESCAPE '!'";
+    final String getStatement = "SELECT * FROM Medicines WHERE id=?";
     final String insertStatementS = "INSERT INTO Medicines VALUES (?, ?)";
     final String updateStatementS = "UPDATE Medicines SET medicineName=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM Medicines ORDER BY id";
@@ -39,7 +38,6 @@ public class MedicinesDao implements IMedicinesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,7 +59,6 @@ public class MedicinesDao implements IMedicinesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -82,7 +79,6 @@ public class MedicinesDao implements IMedicinesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -90,22 +86,18 @@ public class MedicinesDao implements IMedicinesDao {
     }
 
     @Override
-    public List<MedicinesModel> getMedicinesByName(String medicineName) {
+    public MedicinesModel getMedicinesById(int id) {
         Connection con = DataBaseConnection.getConnection();
-        ArrayList<MedicinesModel> medicinesModels = new ArrayList<MedicinesModel>();
+        MedicinesModel medicinesModel = new MedicinesModel();
         try {
             statement = con.prepareStatement(getStatement);
-            statement.setString(1, medicineName + "%");
+            statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                MedicinesModel medicinesModel = new MedicinesModel();
                 medicinesModel.setId(result.getInt("id"));
                 medicinesModel.setMedicineName(result.getString("medicineName"));
-                medicinesModels.add(medicinesModel);
                 medicinesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return medicinesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -117,7 +109,7 @@ public class MedicinesDao implements IMedicinesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return medicinesModel;
     }
 
     public List<MedicinesModel> getAllMedicines() {
@@ -133,8 +125,6 @@ public class MedicinesDao implements IMedicinesDao {
                 medicinesModels.add(medicinesModel);
                 medicinesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return medicinesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -146,7 +136,7 @@ public class MedicinesDao implements IMedicinesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return medicinesModels;
     }
 
 }

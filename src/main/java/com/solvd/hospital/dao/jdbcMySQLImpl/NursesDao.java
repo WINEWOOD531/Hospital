@@ -2,6 +2,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.INursesDao;
 import com.solvd.hospital.models.NursesModel;
+import com.solvd.hospital.models.PersonModel;
 import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ public class NursesDao implements INursesDao {
     private static final Logger LOGGER = LogManager.getLogger(NursesDao.class);
 
     final String deleteStatementS = "DELETE FROM Nurses WHERE id=?";
-    final String getStatement = "SELECT * FROM Nurses WHERE workExperience > ?";
+    final String getStatement = "SELECT * FROM Nurses WHERE id=?";
     final String insertStatementS = "INSERT INTO Nurses VALUES (?, ?,?)";
     final String updateStatementS = "UPDATE Nurses SET workExperience=? WHERE id=?";
     final String INNERJOIN = "SELECT Nurses.id,Nurses.workExperience,person.id, person.firstName," +
@@ -40,7 +41,6 @@ public class NursesDao implements INursesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -62,7 +62,6 @@ public class NursesDao implements INursesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -83,7 +82,6 @@ public class NursesDao implements INursesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -91,23 +89,21 @@ public class NursesDao implements INursesDao {
     }
 
     @Override
-    public List<NursesModel> getNurseByIdWorkExperience(int workExperience) {
+    public NursesModel getNurseById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
+        NursesModel nursesModel = new NursesModel();
+        PersonModel personModel = new PersonModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
-            statement.setInt(1, workExperience);
+            statement.setInt(1, id);
             result = statement.executeQuery();
-            ArrayList<NursesModel> nursesModels = new ArrayList<>();
             while (result.next()) {
-                NursesModel nursesModel = new NursesModel();
                 nursesModel.setId(result.getInt("id"));
+                personModel.setPersonId(result.getInt(2));
+                nursesModel.setPersonModel(personModel);
                 nursesModel.setWorkExperience(result.getInt("workExperience"));
-                nursesModel.setPersonId(result.getInt("Person_id"));
-                nursesModels.add(nursesModel);
                 nursesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return nursesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -119,7 +115,7 @@ public class NursesDao implements INursesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return nursesModel;
     }
 
 
@@ -132,12 +128,14 @@ public class NursesDao implements INursesDao {
             while (result.next()) {
                 NursesModel nursesModel = new NursesModel();
                 nursesModel.setId(result.getInt("id"));
+                PersonDao personDao = new PersonDao();
+                nursesModel.setPersonModel(personDao.getPersonById(result.getInt(2)));
+                //nursesModel.setPersonModel(new PersonDao().getPersonById(result.getInt(2)));
                 nursesModel.setWorkExperience(result.getInt("workExperience"));
-                nursesModel.setPersonId(result.getInt("Person_id"));
+                /*nursesModel.setPersonId(result.getInt("Person_id"));*/
                 nursesModels.add(nursesModel);
                 nursesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
             return nursesModels;
         } catch (Exception e) {
             LOGGER.info(e);
@@ -150,7 +148,7 @@ public class NursesDao implements INursesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return nursesModels;
     }
 
     public List<NursesModel> getAllNursesJoinPerson() {
@@ -162,15 +160,15 @@ public class NursesDao implements INursesDao {
             while (result.next()) {
                 NursesModel nursesModel = new NursesModel();
                 nursesModel.setId(result.getInt("id"));
+                PersonDao personDao = new PersonDao();
+                nursesModel.setPersonModel(personDao.getPersonById(result.getInt("person.id")));
                 nursesModel.setWorkExperience(result.getInt("workExperience"));
-                nursesModel.setPersonId(result.getInt("person.id"));
-                nursesModel.setFirstName(result.getString("person.firstName"));
-                nursesModel.setLastName(result.getString("person.lastName"));
+                //nursesModel.setPersonId(result.getInt("person.id"));
+/*                nursesModel.setFirstName(result.getString("person.firstName"));
+                nursesModel.setLastName(result.getString("person.lastName"));*/
                 nursesModels.add(nursesModel);
                 nursesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return nursesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -182,6 +180,6 @@ public class NursesDao implements INursesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return nursesModels;
     }
 }

@@ -18,14 +18,40 @@ public class Executor {
 
     public static void main(String[] args) throws IOException, JAXBException, SQLException, ClassNotFoundException {
 
-        DoctorsDao doctorsDao= new DoctorsDao();
-       //doctorsDao.getALLDoctors();
-        //doctorsDao.getDoctorByDate("2022-05");
+        DoctorsDao doctorsDao = new DoctorsDao();
+        DoctorsModel doctorsModel = new DoctorsModel();
+/*        doctorsModel.setId(10);
+        doctorsModel.setAvailableDate("2022-06-19");
+        doctorsModel.setPersonId(23);
+        doctorsDao.createDoctor(doctorsModel);*/
+
+/*        doctorsModel.setAvailableDate("2022-06-17");
+        doctorsModel.setId(10);
+        doctorsDao.updateDoctor(doctorsModel);*/
+
+        /*doctorsModel.setId(10);
+        doctorsDao.deleteDoctorById(doctorsModel);*/
+        //LOGGER.info(doctorsDao.getDoctorById(5));
+        //LOGGER.info(doctorsDao.getALLDoctors());
 
 
         AppointmentDao appointmentDao = new AppointmentDao();
-        //appointmentDao.getAllAppointments();
-        //appointmentDao.getAppointmentByDoctorId(3);
+        AppointmentModel appointmentModel = new AppointmentModel();
+        /*appointmentModel.setId(4);
+        appointmentModel.setAppointmentDate("2022-06-20");
+        appointmentModel.setDoctorsId(4);
+        appointmentModel.setPatientId(4);
+        appointmentDao.createAppointment(appointmentModel);*/
+
+        /*appointmentModel.setAppointmentDate("2022-06-21");
+        appointmentModel.setId(4);
+        appointmentDao.updateAppointment(appointmentModel);*/
+
+        //appointmentModel.setId(4);
+        //appointmentDao.deleteAppointmentById(appointmentModel);*/
+
+        //LOGGER.info(appointmentDao.getAllAppointments());
+        //appointmentDao.getAppointmentById(3);
 
         MedicinesDao medicinesDao = new MedicinesDao();
         //medicinesDao.getMedicinesByName("Some medicines");
@@ -36,7 +62,7 @@ public class Executor {
         //specializationDao.getSpecializationByName("Surgery");
         //specializationDao.getAllSpecialization();
 
-        TestsDao testsDao= new TestsDao();
+        TestsDao testsDao = new TestsDao();
         //TestsModel testsModel= new TestsModel(10,"Test Update New Example Test Name");
         //TestsModel testsModel= new TestsModel(10);
 /*        testsModel.setId(10);
@@ -52,50 +78,58 @@ public class Executor {
         //testsDao.getAllTests();
 
         BillDao billDao = new BillDao();
-        //billDao.getAllBillsByPatientId(4);
-        //billDao.getAllBills();
+        //billDao.getBillById(4);
+        //LOGGER.info(billDao.getAllBills());
 
-        NursesDao nursesDao= new NursesDao();
-        //nursesDao.getNurseByIdWorkExperience(5);
-       //nursesDao.getAllNursesJoinPerson();
-        //nursesDao.getAllNurses();
-
-        NurseAllocationDao nurseAllocationDao= new NurseAllocationDao();
+        NursesDao nursesDao = new NursesDao();
+        //LOGGER.info(nursesDao.getNurseById(5));
+        //LOGGER.info(nursesDao.getAllNursesJoinPerson());
+        //LOGGER.info(nursesDao.getAllNurses());
+        NurseAllocationDao nurseAllocationDao = new NurseAllocationDao();
         //nurseAllocationDao.getNurseAllocationById(2);
         //nurseAllocationDao.getAllNurseAllocations();
 
-        PatientDao patientDao= new PatientDao();
-        //patientDao.getPatientByAge(40);
-        //patientDao.getAllPatientsJoinPerson();
-        //patientDao.getAllPatients();
+        PatientDao patientDao = new PatientDao();
+/*        PatientModel patientModel = new PatientModel();
+        patientModel.setId(6);
+        patientModel.setAge(60);
+        patientModel.setBloodGroup("A");
+        patientModel.setSex("F");
+        patientModel.setPersonId(23);
+        patientDao.createPatient(patientModel);*/
+
+        //LOGGER.info(patientDao.getPatientById(3));
+        //LOGGER.info(patientDao.getAllPatientsJoinPerson());
+        //LOGGER.info(patientDao.getAllPatients());
 
         RecordsDao recordsDao = new RecordsDao();
         //recordsDao.getRecordsByPatientId(1);
         //recordsDao.getAllRecordsJoinPatient();
-        //recordsDao.getAllRecords();
+        //LOGGER.info(recordsDao.getAllRecords());
+        //LOGGER.info(recordsDao.getAllRecordsJoinPatient());
 
-        RoomsDao roomsDao= new RoomsDao();
-        //roomsDao.getRoomByDepartmentName("Ophthalmic");
-        //roomsDao.getAllRoomsJoinPatient();
-        //roomsDao.getAllRooms();
+        RoomsDao roomsDao = new RoomsDao();
+        //LOGGER.info(roomsDao.getRoomById(2));
+        //LOGGER.info(roomsDao.getAllRoomsJoinPatient());
+        LOGGER.info(roomsDao.getAllRooms());
 
 
-        TakesDao takesDao= new TakesDao();
-        //takesDao.getTakesByMedicineId(1);
-        //takesDao.getAllTakes();
+        TakesDao takesDao = new TakesDao();
+        //LOGGER.info(takesDao.getTakesById(1));
+        //LOGGER.info(takesDao.getAllTakes());
 
-        TestsDescriptionsDao testsDescriptionsDao=new TestsDescriptionsDao();
-        //testsDescriptionsDao.getTestsDescriptionsByTestId(5);
+        TestsDescriptionsDao testsDescriptionsDao = new TestsDescriptionsDao();
+        //LOGGER.info(testsDescriptionsDao.getTestsDescriptionsById(5));
 
         //testsDescriptionsDao.getAllTestsDescriptions();
 
-        ExpertInDao expertInDao= new ExpertInDao();
-        //expertInDao.getAllExpertIn();
-        //expertInDao.getAllExpertInBySpecializationId(5);
+        ExpertInDao expertInDao = new ExpertInDao();
+        //LOGGER.info(expertInDao.getAllExpertIn());
+        //expertInDao.getExpertInById(5);
 
-        PersonDao  personDao= new PersonDao();
-        PersonModel personModel= new PersonModel();
-        /*personModel.setPersonId(23);
+        PersonDao personDao = new PersonDao();
+        PersonModel personModel = new PersonModel();
+        /*personModel.setPersonId(24);
         personModel.setFirstName("Alex");
         personModel.setLastName("Serfy");
         personModel.setPhoneNumber("(755)957-9953");
@@ -106,11 +140,11 @@ public class Executor {
         personModel.setPersonId(23);
         personDao.updatePerson(personModel);*/
 
-        /*personModel.setPersonId(23);
+        /*personModel.setPersonId(24);
         personDao.deletePersonById(personModel);*/
 
         //personDao.getAllPersons();
-        //personDao.getPersonByName("Maria");
+        //LOGGER.info(personDao.getPersonById(5));
     }
 
 

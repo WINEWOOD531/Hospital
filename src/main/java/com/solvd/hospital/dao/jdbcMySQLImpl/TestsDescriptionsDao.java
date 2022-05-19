@@ -16,7 +16,7 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TestsDescriptionsDao.class);
     final String deleteStatementS = "DELETE FROM testsdescriptions WHERE id=?";
-    final String getStatement = "SELECT * FROM testsdescriptions WHERE Tests_id = ?";
+    final String getStatement = "SELECT * FROM testsdescriptions WHERE id=?";
     final String insertStatementS = "INSERT INTO testsdescriptions VALUES (?, ?, ?,?,?)";
     final String updateStatementS = "UPDATE testsdescriptions SET testAnalysis=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM testsdescriptions";
@@ -41,7 +41,6 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -63,7 +62,6 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -84,7 +82,6 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -92,25 +89,27 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
     }
 
     @Override
-    public ArrayList<TestsDescriptionsModel> getTestsDescriptionsByTestId(int id) {
-        ArrayList<TestsDescriptionsModel> testsDescriptionsModels = new ArrayList<>();
+    public TestsDescriptionsModel getTestsDescriptionsById(int id) {
+        TestsDescriptionsModel testsDescriptionsModel = new TestsDescriptionsModel();
         Connection dbConnect = DataBaseConnection.getConnection();
+        TestsModel testsModel = new TestsModel();
+        PatientModel patientModel = new PatientModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                TestsDescriptionsModel testsDescriptionsModel = new TestsDescriptionsModel();
                 testsDescriptionsModel.setId(result.getInt(1));
                 testsDescriptionsModel.setTestDate(result.getString(2));
                 testsDescriptionsModel.setTestAnalysis(result.getString(3));
-                testsDescriptionsModel.setTestsId(result.getInt(4));
-                testsDescriptionsModel.setPatientId(result.getInt(5));
-                testsDescriptionsModels.add(testsDescriptionsModel);
+/*                testsDescriptionsModel.setTestsId(result.getInt(4));
+                testsDescriptionsModel.setPatientId(result.getInt(5));*/
+                testsModel.setId(result.getInt("id"));
+                patientModel.setId(result.getInt("id"));
+                testsDescriptionsModel.setTests(testsModel);
+                testsDescriptionsModel.setPatient(patientModel);
                 testsDescriptionsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return testsDescriptionsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -122,7 +121,7 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return testsDescriptionsModel;
     }
 
     public ArrayList<TestsDescriptionsModel> getAllTestsDescriptions() {
@@ -136,13 +135,17 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
                 testsDescriptionsModel.setId(result.getInt(1));
                 testsDescriptionsModel.setTestDate(result.getString(2));
                 testsDescriptionsModel.setTestAnalysis(result.getString(3));
-                testsDescriptionsModel.setTestsId(result.getInt(4));
-                testsDescriptionsModel.setPatientId(result.getInt(5));
+/*                testsDescriptionsModel.setTestsId(result.getInt(4));
+                testsDescriptionsModel.setPatientId(result.getInt(5));*/
+/*                testsDescriptionsModel.setTests(new TestsDao().getTestsById(result.getInt(4)));
+                testsDescriptionsModel.setPatient(new PatientDao().getPatientById(result.getInt(5)));*/
+                PatientDao patientDao = new PatientDao();
+                TestsDao testsDao = new TestsDao();
+                testsDescriptionsModel.setTests(testsDao.getTestsById(result.getInt(4)));
+                testsDescriptionsModel.setPatient(patientDao.getPatientById(result.getInt(5)));
                 testsDescriptionsModels.add(testsDescriptionsModel);
                 testsDescriptionsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return testsDescriptionsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -154,6 +157,6 @@ public class TestsDescriptionsDao implements ITestsDescriptionsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return testsDescriptionsModels;
     }
 }

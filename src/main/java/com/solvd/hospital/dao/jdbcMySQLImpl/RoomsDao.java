@@ -15,7 +15,7 @@ public class RoomsDao implements IRoomsDao {
     private static final Logger LOGGER = LogManager.getLogger(RoomsDao.class);
 
     final String deleteStatementS = "DELETE FROM rooms WHERE id=?";
-    final String getStatement = "SELECT * FROM rooms WHERE departmentName= ?";
+    final String getStatement = "SELECT * FROM rooms WHERE id=?";
     final String insertStatementS = "INSERT INTO rooms VALUES (?, ?, ?,?,?,?)";
     final String updateStatementS = "UPDATE rooms SET dateIn=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM rooms";
@@ -40,6 +40,13 @@ public class RoomsDao implements IRoomsDao {
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
             LOGGER.info(e);
+        } finally {
+            try {
+                DataBaseConnection.close(dbConnect);
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -79,7 +86,6 @@ public class RoomsDao implements IRoomsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -87,27 +93,28 @@ public class RoomsDao implements IRoomsDao {
     }
 
     @Override
-    public ArrayList<RoomsModel> getRoomByDepartmentName(String name) {
-        ArrayList<RoomsModel> roomsModels = new ArrayList<>();
+    public RoomsModel getRoomById(int id) {
+
         PatientModel patient = new PatientModel();
         Connection dbConnect = DataBaseConnection.getConnection();
+        RoomsModel roomsModel = new RoomsModel();
+        PatientModel patientModel = new PatientModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
-            statement.setString(1, name);
+            statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                RoomsModel roomsModel = new RoomsModel();
-                roomsModel.setId(result.getInt("id"));
+                roomsModel.setRoomsId(result.getInt("id"));
                 roomsModel.setRoomNumber(result.getString("roomNumber"));
                 roomsModel.setDepartmentName(result.getString("departmentName"));
                 roomsModel.setDateIn(result.getString("dateIn"));
                 roomsModel.setDateOut(result.getString("dateOut"));
-                roomsModel.setRoomsId(result.getInt("Patient_id"));
-                roomsModels.add(roomsModel);
+                //roomsModel.setRoomsId(result.getInt("Patient_id"));
+                //roomsModel.setPatient(new PatientDao().getPatientById(result.getInt(6)));
+                patient.setId(result.getInt("id"));
+                roomsModel.setPatient(patient);
                 roomsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return roomsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -119,7 +126,7 @@ public class RoomsDao implements IRoomsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return roomsModel;
     }
 
     public ArrayList<RoomsModel> getAllRooms() {
@@ -131,16 +138,17 @@ public class RoomsDao implements IRoomsDao {
             result = statement.executeQuery();
             while (result.next()) {
                 RoomsModel roomsModel = new RoomsModel();
-                roomsModel.setId(result.getInt("id"));
+                roomsModel.setRoomsId(result.getInt("id"));
                 roomsModel.setRoomNumber(result.getString("roomNumber"));
                 roomsModel.setDepartmentName(result.getString("departmentName"));
                 roomsModel.setDateIn(result.getString("dateIn"));
                 roomsModel.setDateOut(result.getString("dateOut"));
-                roomsModel.setRoomsId(result.getInt("Patient_id"));
+                PatientDao patientDao= new PatientDao();
+                roomsModel.setPatient(patientDao.getPatientById(result.getInt(6)));
+                /*roomsModel.setPatient(new PatientDao().getPatientById(result.getInt(6)));*/
                 roomsModels.add(roomsModel);
                 roomsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
             return roomsModels;
         } catch (Exception e) {
             LOGGER.info(e);
@@ -153,7 +161,7 @@ public class RoomsDao implements IRoomsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return roomsModels;
     }
 
     public ArrayList<RoomsModel> getAllRoomsJoinPatient() {
@@ -164,19 +172,20 @@ public class RoomsDao implements IRoomsDao {
             result = statement.executeQuery();
             while (result.next()) {
                 RoomsModel roomsModel = new RoomsModel();
-                roomsModel.setId(result.getInt("id"));
+               // roomsModel.setId(result.getInt("id"));
                 roomsModel.setRoomNumber(result.getString("roomNumber"));
                 roomsModel.setDepartmentName(result.getString("departmentName"));
                 roomsModel.setDateIn(result.getString("dateIn"));
                 roomsModel.setDateOut(result.getString("dateOut"));
                 roomsModel.setRoomsId(result.getInt("patient.id"));
+/*                roomsModel.setRoomsId(result.getInt("patient.id"));
                 roomsModel.setAge(result.getInt("patient.age"));
                 roomsModel.setBloodGroup(result.getString("patient.bloodGroup"));
-                roomsModel.setSex(result.getString("patient.sex"));
+                roomsModel.setSex(result.getString("patient.sex"));*/
+                PatientDao patientDao= new PatientDao();
+                roomsModel.setPatient(patientDao.getPatientById(result.getInt("id")));
                 roomsModels.add(roomsModel);
             }
-            LOGGER.info("ALL is OK!");
-            return roomsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -188,7 +197,7 @@ public class RoomsDao implements IRoomsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return roomsModels;
     }
 
 }

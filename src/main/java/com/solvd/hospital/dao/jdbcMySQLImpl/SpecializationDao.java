@@ -17,7 +17,7 @@ public class SpecializationDao implements ISpecializationDao {
     private static final Logger LOGGER = LogManager.getLogger(SpecializationDao.class);
 
     final String deleteStatementS = "DELETE FROM Specialization WHERE id=?";
-    final String getStatement = "SELECT * FROM Specialization WHERE specializationName = ?";
+    final String getStatement = "SELECT * FROM Specialization WHERE id=?";
     final String insertStatementS = "INSERT INTO Specialization VALUES (?, ?)";
     final String updateStatementS = "UPDATE Specialization SET specializationName=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM Specialization";
@@ -39,7 +39,6 @@ public class SpecializationDao implements ISpecializationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,7 +60,6 @@ public class SpecializationDao implements ISpecializationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -82,7 +80,6 @@ public class SpecializationDao implements ISpecializationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -90,22 +87,18 @@ public class SpecializationDao implements ISpecializationDao {
     }
 
     @Override
-    public List<SpecializationModel> getSpecializationByName(String name) {
+    public SpecializationModel getSpecializationById(int id) {
+        SpecializationModel specializationModel = new SpecializationModel();
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(getStatement);
-            statement.setString(1, name);
+            statement.setInt(1, id);
             result = statement.executeQuery();
-            ArrayList<SpecializationModel> specializationModels = new ArrayList<SpecializationModel>();
             while (result.next()) {
-                SpecializationModel specializationModel = new SpecializationModel();
                 specializationModel.setId(result.getInt(1));
                 specializationModel.setSpecialization(result.getString(2));
-                specializationModels.add(specializationModel);
                 specializationModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return specializationModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -117,7 +110,7 @@ public class SpecializationDao implements ISpecializationDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return specializationModel;
     }
 
     public List<SpecializationModel> getAllSpecialization() {
@@ -133,8 +126,6 @@ public class SpecializationDao implements ISpecializationDao {
                 specializationModels.add(specializationModel);
                 specializationModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return specializationModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -146,7 +137,7 @@ public class SpecializationDao implements ISpecializationDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return specializationModels;
     }
 
 }

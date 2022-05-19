@@ -12,5 +12,5 @@ public interface ITestsDescriptionsDao {
 
     void deleteTestsDescriptionsById(TestsDescriptionsModel testsDescriptionsModel);
 
-    ArrayList<TestsDescriptionsModel> getTestsDescriptionsByTestId(int id);
+    TestsDescriptionsModel getTestsDescriptionsById(int id);
 }

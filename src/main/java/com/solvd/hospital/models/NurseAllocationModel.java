@@ -3,9 +3,9 @@ package com.solvd.hospital.models;
 public class NurseAllocationModel {
 
     private int id;
-    private int nursesId;
+/*    private int nursesId;
     private int doctorsId;
-    private int patientId;
+    private int patientId;*/
     private String dateIn;
     private String dateOut;
     private NursesModel nurses;
@@ -15,12 +15,9 @@ public class NurseAllocationModel {
     public NurseAllocationModel() {
     }
 
-    public NurseAllocationModel(int id, int nursesId, int doctorsId, int patientId, String dateIn, String dateOut,
+    public NurseAllocationModel(int id,  String dateIn, String dateOut,
                                 NursesModel nurses, DoctorsModel doctors, PatientModel patient) {
         this.id = id;
-        this.nursesId = nursesId;
-        this.doctorsId = doctorsId;
-        this.patientId = patientId;
         this.dateIn = dateIn;
         this.dateOut = dateOut;
         this.nurses = nurses;
@@ -32,7 +29,7 @@ public class NurseAllocationModel {
         this.id = id;
     }
 
-    public void setNursesId(int nursesId) {
+/*    public void setNursesId(int nursesId) {
         this.nursesId = nursesId;
     }
 
@@ -42,7 +39,7 @@ public class NurseAllocationModel {
 
     public void setPatientId(int patientId) {
         this.patientId = patientId;
-    }
+    }*/
 
     public void setDateIn(String dateIn) {
         this.dateIn = dateIn;
@@ -68,7 +65,7 @@ public class NurseAllocationModel {
         return id;
     }
 
-    public int getNursesId() {
+/*    public int getNursesId() {
         return nursesId;
     }
 
@@ -78,7 +75,7 @@ public class NurseAllocationModel {
 
     public int getPatientId() {
         return patientId;
-    }
+    }*/
 
     public String getDateIn() {
         return dateIn;
@@ -104,9 +101,6 @@ public class NurseAllocationModel {
     public String toString() {
         return "NurseAllocationModel{" +
                 "id=" + id +
-                ", nursesId=" + nursesId +
-                ", doctorsId=" + doctorsId +
-                ", patientId=" + patientId +
                 ", dateIn='" + dateIn + '\'' +
                 ", dateOut='" + dateOut + '\'' +
                 ", nurses=" + nurses +

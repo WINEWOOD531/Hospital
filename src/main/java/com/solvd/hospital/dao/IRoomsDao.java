@@ -12,5 +12,5 @@ public interface IRoomsDao {
 
     void deleteRoomById(RoomsModel roomsModel);
 
-    ArrayList<RoomsModel> getRoomByDepartmentName(String name);
+    RoomsModel getRoomById(int id);
 }

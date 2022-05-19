@@ -11,5 +11,5 @@ public interface IPersonDao {
 
     void deletePersonById(PersonModel personModel);
 
-    List<PersonModel> getPersonByName(String name);
+    PersonModel getPersonById(int id);
 }

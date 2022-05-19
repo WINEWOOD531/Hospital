@@ -13,5 +13,5 @@ public interface IMedicinesDao {
 
     void deleteMedicinesById(MedicinesModel medicinesModel);
 
-    List<MedicinesModel>  getMedicinesByName(String medicineName);
+    MedicinesModel getMedicinesById(int id);
 }

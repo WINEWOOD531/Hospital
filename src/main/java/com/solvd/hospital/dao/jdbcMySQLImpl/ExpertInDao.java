@@ -17,7 +17,7 @@ public class ExpertInDao implements IExpertInDao {
     private static final Logger LOGGER = LogManager.getLogger(ExpertInDao.class);
 
     final String deleteStatementS = "DELETE FROM ExpertIn WHERE id=?";
-    final String getStatement = "SELECT * FROM ExpertIn WHERE Specialization_id = ?";
+    final String getStatement = "SELECT * FROM ExpertIn WHERE id = ?";
     final String insertStatementS = "INSERT INTO ExpertIn VALUES (?, ?,?)";
     final String updateStatementS = "UPDATE ExpertIn SET Specialization_id=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM ExpertIn";
@@ -41,7 +41,6 @@ public class ExpertInDao implements IExpertInDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -63,7 +62,6 @@ public class ExpertInDao implements IExpertInDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -84,7 +82,6 @@ public class ExpertInDao implements IExpertInDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -92,23 +89,25 @@ public class ExpertInDao implements IExpertInDao {
     }
 
     @Override
-    public List<ExpertInModel> getAllExpertInBySpecializationId(int id) {
+    public ExpertInModel getExpertInById(int id) {
         Connection con = DataBaseConnection.getConnection();
-        ArrayList<ExpertInModel> expertInModels = new ArrayList<ExpertInModel>();
+        ExpertInModel expertInModel = new ExpertInModel();
+        DoctorsModel doctorsModel = new DoctorsModel();
+        SpecializationModel specializationModel = new SpecializationModel();
         try {
             statement = con.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                ExpertInModel expertInModel = new ExpertInModel();
                 expertInModel.setId(result.getInt(1));
-                expertInModel.setDoctorsId(result.getInt(2));
-                expertInModel.setSpecializationId(result.getInt(3));
-                expertInModels.add(expertInModel);
+/*                expertInModel.setDoctorsId(result.getInt(2));
+                expertInModel.setSpecializationId(result.getInt(3));*/
+                doctorsModel.setId(result.getInt("id"));
+                specializationModel.setId(result.getInt("id"));
+                expertInModel.setDoctors(doctorsModel);
+                expertInModel.setSpecialization(specializationModel);
                 expertInModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return expertInModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -120,14 +119,14 @@ public class ExpertInDao implements IExpertInDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return expertInModel;
     }
 
 
     public List<ExpertInModel> getAllExpertIn() {
         Connection con = DataBaseConnection.getConnection();
         ArrayList<ExpertInModel> expertInModels = new ArrayList<ExpertInModel>();
-        DoctorsModel doctors = new DoctorsModel();
+        DoctorsModel doctorsModel = new DoctorsModel();
         SpecializationModel specializationModel = new SpecializationModel();
         try {
             statement = con.prepareStatement(GET_ALL);
@@ -135,13 +134,18 @@ public class ExpertInDao implements IExpertInDao {
             while (result.next()) {
                 ExpertInModel expertInModel = new ExpertInModel();
                 expertInModel.setId(result.getInt(1));
-                expertInModel.setDoctorsId(result.getInt(2));
-                expertInModel.setSpecializationId(result.getInt(3));
+                DoctorsDao doctorsDao = new DoctorsDao();
+                SpecializationDao specializationDao = new SpecializationDao();
+                expertInModel.setDoctors(doctorsDao.getDoctorById(result.getInt(2)));
+                expertInModel.setSpecialization(specializationDao.getSpecializationById(result.getInt(3)));
+/*                expertInModel.setDoctors(new DoctorsDao().getDoctorById(result.getInt(2)));
+                expertInModel.setSpecialization(new SpecializationDao().getSpecializationById(
+                        result.getInt(3)));*/
+/*                expertInModel.setDoctorsId(result.getInt(2));
+                expertInModel.setSpecializationId(result.getInt(3));*/
                 expertInModels.add(expertInModel);
                 expertInModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return expertInModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -153,7 +157,7 @@ public class ExpertInDao implements IExpertInDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return expertInModels;
     }
 
 }

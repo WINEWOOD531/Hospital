@@ -2,6 +2,7 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IDoctorsDao;
 import com.solvd.hospital.models.DoctorsModel;
+import com.solvd.hospital.models.PersonModel;
 import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ public class DoctorsDao implements IDoctorsDao {
 
     private static final Logger LOGGER = LogManager.getLogger(DoctorsDao.class);
     final String deleteStatementS = "DELETE FROM Doctors WHERE id = ?";
-    final String getStatement = "SELECT * FROM Doctors WHERE availaibleDate LIKE ? ESCAPE '!'";
+    final String getStatement = "SELECT * FROM Doctors WHERE id=?";
     final String insertStatementS = "INSERT INTO Doctors VALUES (?, ?, ?)";
     final String updateStatementS = "UPDATE Doctors SET availaibleDate=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM Doctors";
@@ -23,6 +24,7 @@ public class DoctorsDao implements IDoctorsDao {
             "FROM doctors INNER JOIN person ON doctors.Person_id = person.id";
     PreparedStatement statement = null;
     ResultSet result = null;
+    PersonModel personModel = new PersonModel();
 
     @Override
     public void createDoctor(DoctorsModel doctorsModel) {
@@ -40,7 +42,6 @@ public class DoctorsDao implements IDoctorsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -54,14 +55,14 @@ public class DoctorsDao implements IDoctorsDao {
             statement = dbConnect.prepareStatement(updateStatementS);
             statement.setString(1, doctorsModel.getAvailableDate());
             statement.setInt(2, doctorsModel.getId());
-            statement.executeUpdate();
+            int i = statement.executeUpdate();
+            LOGGER.info(i + " records updated");
         } catch (SQLException e) {
-            LOGGER.error("ERROR UPDATE CLIENTS " + e.getMessage());
+            LOGGER.error("ERROR UPDATE DOCTORS " + e.getMessage());
         } finally {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -74,14 +75,15 @@ public class DoctorsDao implements IDoctorsDao {
         try {
             statement = dbConnect.prepareStatement(deleteStatementS);
             statement.setInt(1, doctorsModel.getId());
-            statement.executeUpdate();
+            int i = statement.executeUpdate();
+            LOGGER.info(i + " records deleted");
+            //statement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("ERROR DELETE Doctor WITH ID " + e.getMessage());
         } finally {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -89,23 +91,19 @@ public class DoctorsDao implements IDoctorsDao {
     }
 
     @Override
-    public List<DoctorsModel> getDoctorByDate(String date) {
-        ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
+    public DoctorsModel getDoctorById(int id) {
         Connection con = DataBaseConnection.getConnection();
+        DoctorsModel doctors = new DoctorsModel();
         try {
             statement = con.prepareStatement(getStatement);
-            statement.setString(1, date + "%");
+            statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                DoctorsModel doctors = new DoctorsModel();
                 doctors.setId(result.getInt("id"));
                 doctors.setAvailableDate(result.getString("availaibleDate"));
                 doctors.setPersonId(result.getInt("Person_id"));
-                doctorsModels.add(doctors);
                 doctors.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return doctorsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -117,7 +115,7 @@ public class DoctorsDao implements IDoctorsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return doctors;
     }
 
     public List<DoctorsModel> getALLDoctors() {
@@ -133,8 +131,6 @@ public class DoctorsDao implements IDoctorsDao {
                 doctors.setPersonId(result.getInt("Person_id"));
                 doctorsModels.add(doctors);
             }
-            LOGGER.info("ALL is OK!");
-            return doctorsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -146,10 +142,10 @@ public class DoctorsDao implements IDoctorsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return doctorsModels;
     }
 
-    public List<DoctorsModel> getALLDoctorsJoinPerson() {
+/*    public List<DoctorsModel> getALLDoctorsJoinPerson() {
         ArrayList<DoctorsModel> doctorsModels = new ArrayList<DoctorsModel>();
         Connection con = DataBaseConnection.getConnection();
         try {
@@ -164,8 +160,6 @@ public class DoctorsDao implements IDoctorsDao {
                 doctors.setLastName(result.getString("person.lastName"));
                 doctorsModels.add(doctors);
             }
-            LOGGER.info("ALL is OK!");
-            return doctorsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -177,7 +171,7 @@ public class DoctorsDao implements IDoctorsDao {
                 e.printStackTrace();
             }
         }
-        return null;
-    }
+        return doctorsModels;
+    }*/
 
 }

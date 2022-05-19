@@ -12,5 +12,5 @@ public interface ITakesDao {
 
     void deleteTakesById(TakesModel takesModel);
 
-    ArrayList<TakesModel> getTakesByMedicineId(int id);
+    TakesModel getTakesById(int id);
 }

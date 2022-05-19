@@ -12,6 +12,6 @@ public interface ISpecializationDao {
 
     void deleteSpecializationById(SpecializationModel specializationModel);
 
-    List<SpecializationModel> getSpecializationByName(String name);
+    SpecializationModel getSpecializationById(int id);
 
 }

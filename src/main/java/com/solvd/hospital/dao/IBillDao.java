@@ -13,5 +13,5 @@ public interface IBillDao {
 
     void deleteBillByPatientId(BillModel billModel);
 
-    List<BillModel> getAllBillsByPatientId(int id);
+    BillModel getBillById(int id);
 }

@@ -16,7 +16,7 @@ public class NurseAllocationDao implements INurseAllocationDao {
 
     private static final Logger LOGGER = LogManager.getLogger(NurseAllocationDao.class);
     final String deleteStatementS = "DELETE FROM nurseallocation WHERE id=?";
-    final String getStatement = "SELECT * FROM nurseallocation WHERE Nurses_id = ?";
+    final String getStatement = "SELECT * FROM nurseallocation WHERE id = ?";
     final String insertStatementS = "INSERT INTO nurseallocation VALUES (?, ?, ?,?,?,?)";
     final String updateStatementS = "UPDATE nurseallocation SET dateIn=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM nurseallocation";
@@ -42,7 +42,6 @@ public class NurseAllocationDao implements INurseAllocationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -64,7 +63,6 @@ public class NurseAllocationDao implements INurseAllocationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -85,7 +83,6 @@ public class NurseAllocationDao implements INurseAllocationDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -93,26 +90,28 @@ public class NurseAllocationDao implements INurseAllocationDao {
     }
 
     @Override
-    public ArrayList<NurseAllocationModel> getNurseAllocationById(int id) {
-        ArrayList<NurseAllocationModel> nurseAllocationModels = new ArrayList<NurseAllocationModel>();
+    public NurseAllocationModel getNurseAllocationById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
+        NurseAllocationModel nurseAllocationModel = new NurseAllocationModel();
+        DoctorsModel doctorsModel = new DoctorsModel();
+        PatientModel patientModel = new PatientModel();
+        NursesModel nursesModel = new NursesModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                NurseAllocationModel nurseAllocationModel = new NurseAllocationModel();
                 nurseAllocationModel.setId(result.getInt(1));
                 nurseAllocationModel.setDateIn(result.getString(2));
                 nurseAllocationModel.setDateOut(result.getString(3));
-                nurseAllocationModel.setNursesId(result.getInt(4));
-                nurseAllocationModel.setDoctorsId(result.getInt(5));
-                nurseAllocationModel.setPatientId(result.getInt(6));
-                nurseAllocationModels.add(nurseAllocationModel);
+                nursesModel.setId(result.getInt("id"));
+                doctorsModel.setId(result.getInt("id"));
+                patientModel.setId(result.getInt("id"));
+                nurseAllocationModel.setNurses(nursesModel);
+                nurseAllocationModel.setDoctors(doctorsModel);
+                nurseAllocationModel.setPatient(patientModel);
                 nurseAllocationModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return nurseAllocationModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -124,7 +123,7 @@ public class NurseAllocationDao implements INurseAllocationDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return nurseAllocationModel;
     }
 
     public ArrayList<NurseAllocationModel> getAllNurseAllocations() {
@@ -138,13 +137,21 @@ public class NurseAllocationDao implements INurseAllocationDao {
                 nurseAllocationModel.setId(result.getInt(1));
                 nurseAllocationModel.setDateIn(result.getString(2));
                 nurseAllocationModel.setDateOut(result.getString(3));
-                nurseAllocationModel.setNursesId(result.getInt(4));
+/*                nurseAllocationModel.setNursesId(result.getInt(4));
                 nurseAllocationModel.setDoctorsId(result.getInt(5));
-                nurseAllocationModel.setPatientId(result.getInt(6));
+                nurseAllocationModel.setPatientId(result.getInt(6));*/
+               /* nurseAllocationModel.setNurses(new NursesDao().getNurseById(result.getInt("id")));
+                nurseAllocationModel.setPatient(new PatientDao().getPatientById(result.getInt("id")));
+                nurseAllocationModel.setDoctors(new DoctorsDao().getDoctorById(result.getInt("id")));*/
+                NursesDao nursesDao = new NursesDao();
+                DoctorsDao doctorsDao = new DoctorsDao();
+                PatientDao patientDao = new PatientDao();
+                nurseAllocationModel.setNurses(nursesDao.getNurseById(result.getInt(4)));
+                nurseAllocationModel.setDoctors(doctorsDao.getDoctorById(result.getInt(5)));
+                nurseAllocationModel.setPatient(patientDao.getPatientById(result.getInt(6)));
                 nurseAllocationModels.add(nurseAllocationModel);
                 nurseAllocationModel.toString();
             }
-            LOGGER.info("ALL is OK!");
             return nurseAllocationModels;
         } catch (Exception e) {
             LOGGER.info(e);
@@ -157,7 +164,7 @@ public class NurseAllocationDao implements INurseAllocationDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return nurseAllocationModels;
     }
 
 }

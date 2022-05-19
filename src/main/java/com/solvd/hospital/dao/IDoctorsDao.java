@@ -13,5 +13,5 @@ public interface IDoctorsDao {
 
     void deleteDoctorById(DoctorsModel doctorsModel);
 
-    List<DoctorsModel> getDoctorByDate(String date);
+    DoctorsModel getDoctorById(int id);
 }

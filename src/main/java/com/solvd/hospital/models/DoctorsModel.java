@@ -1,13 +1,13 @@
 package com.solvd.hospital.models;
 
 
-
 import java.util.List;
 
-public class DoctorsModel extends PersonModel{
+public class DoctorsModel extends PersonModel {
 
     private int id;
     private String availableDate;
+    int personId;
     private List<ExpertInModel> expertIn;
     private List<AppointmentModel> appointment;
     private List<NurseAllocationModel> nurseAllocations;
@@ -16,7 +16,8 @@ public class DoctorsModel extends PersonModel{
     public DoctorsModel() {
 
     }
-    public DoctorsModel(int id,String availableDate,int personId) {
+
+    public DoctorsModel(int id, String availableDate, int personId) {
         this.id = id;
         this.availableDate = availableDate;
         setId(personId);
@@ -39,6 +40,10 @@ public class DoctorsModel extends PersonModel{
         this.availableDate = availableDate;
     }
 
+    @Override
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
 
     public void setExpertIn(List<ExpertInModel> expertIn) {
         this.expertIn = expertIn;
@@ -60,6 +65,11 @@ public class DoctorsModel extends PersonModel{
         return availableDate;
     }
 
+    @Override
+    public int getPersonId() {
+        return personId;
+    }
+
     public List<ExpertInModel> getExpertIn() {
         return expertIn;
     }
@@ -75,11 +85,9 @@ public class DoctorsModel extends PersonModel{
     @Override
     public String toString() {
         return "DoctorsModel{" +
-                "id=" + id +
-                ", availableDate='" + availableDate + '\'' +
-                ", expertIn=" + expertIn +
-                ", appointment=" + appointment +
-                ", nurseAllocations=" + nurseAllocations +
+                "\nid=" + id +
+                ", \navailableDate='" + availableDate + '\'' +
+                ", \npersonId=" + personId +
                 '}';
     }
 }

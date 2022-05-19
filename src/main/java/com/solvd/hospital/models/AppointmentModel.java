@@ -9,15 +9,14 @@ public class AppointmentModel {
     private DoctorsModel doctors;
     private PatientModel patient;
 
-
     public AppointmentModel() {
     }
 
     public AppointmentModel(int id, String appointmentDate, int doctorsModelId, int patientModelId) {
         this.id = id;
         this.appointmentDate = appointmentDate;
-        this.doctorsId=doctorsModelId;
-        this.patientId=patientModelId;
+        this.doctorsId = doctorsModelId;
+        this.patientId = patientModelId;
     }
 
     public AppointmentModel(int id, String appointmentDate, DoctorsModel doctors, PatientModel patient) {
@@ -26,7 +25,6 @@ public class AppointmentModel {
         this.doctors = doctors;
         this.patient = patient;
     }
-
 
     public void setId(int id) {
         this.id = id;
@@ -48,9 +46,16 @@ public class AppointmentModel {
         this.doctors = doctors;
     }
 
+   /* public void setDoctors(int id) {
+        this.doctors = doctors;
+    }*/
+
     public void setPatient(PatientModel patient) {
         this.patient = patient;
     }
+/*    public void setPatient(int id) {
+        this.patient = patient;
+    }*/
 
     public int getId() {
         return id;
@@ -79,12 +84,10 @@ public class AppointmentModel {
     @Override
     public String toString() {
         return "AppointmentModel{" +
-                "id=" + id +
-                ", doctorsId=" + doctorsId +
-                ", patientId=" + patientId +
-                ", appointmentDate='" + appointmentDate + '\'' +
-                ", doctors=" + doctors +
-                ", patient=" + patient +
+                "\nid=" + id +
+                ", \nappointmentDate='" + appointmentDate + '\'' +
+                ", \ndoctors=" + doctors +
+                ", \npatient=" + patient +
                 '}';
     }
 }

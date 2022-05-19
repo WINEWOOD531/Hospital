@@ -13,5 +13,5 @@ public interface IAppointmentDao {
 
     void deleteAppointmentById(AppointmentModel appointmentModel);
 
-    List<AppointmentModel>  getAppointmentByDoctorId(int id);
+    AppointmentModel getAppointmentById(int id);
 }

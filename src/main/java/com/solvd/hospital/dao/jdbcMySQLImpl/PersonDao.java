@@ -16,7 +16,7 @@ public class PersonDao implements IPersonDao {
     private static final Logger LOGGER = LogManager.getLogger(PersonDao.class);
 
     final String deleteStatementS = "DELETE FROM person WHERE id=?";
-    final String getStatement = "SELECT * FROM person WHERE firstName = ?";
+    final String getStatement = "SELECT * FROM person WHERE id = ?";
     final String insertStatementS = "INSERT INTO person VALUES (?, ?,?,?)";
     final String updateStatementS = "UPDATE person SET phoneNumber=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM person";
@@ -40,7 +40,6 @@ public class PersonDao implements IPersonDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -62,7 +61,6 @@ public class PersonDao implements IPersonDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -83,7 +81,6 @@ public class PersonDao implements IPersonDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -91,24 +88,20 @@ public class PersonDao implements IPersonDao {
     }
 
     @Override
-    public List<PersonModel> getPersonByName(String name) {
+    public PersonModel getPersonById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
+        PersonModel personModel = new PersonModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
-            statement.setString(1, name);
+            statement.setInt(1, id);
             result = statement.executeQuery();
-            ArrayList<PersonModel> personModels = new ArrayList<>();
             while (result.next()) {
-                PersonModel personModel = new PatientModel();
                 personModel.setPersonId(result.getInt(1));
                 personModel.setFirstName(result.getString(2));
                 personModel.setLastName(result.getString(3));
                 personModel.setPhoneNumber(result.getString(4));
-                personModels.add(personModel);
                 personModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return personModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -120,7 +113,7 @@ public class PersonDao implements IPersonDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return personModel;
     }
 
     public ArrayList<PersonModel> getAllPersons() {
@@ -128,9 +121,9 @@ public class PersonDao implements IPersonDao {
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(GET_ALL);
-            ResultSet result = statement.executeQuery();
+            result = statement.executeQuery();
             while (result.next()) {
-                PersonModel personModel = new PatientModel();
+                PersonModel personModel = new PersonModel();
                 personModel.setPersonId(result.getInt(1));
                 personModel.setFirstName(result.getString(2));
                 personModel.setLastName(result.getString(3));
@@ -139,6 +132,7 @@ public class PersonDao implements IPersonDao {
                 personModel.toString();
             }
             LOGGER.info("ALL is OK!");
+            //LOGGER.info(personModels);
             return personModels;
         } catch (Exception e) {
             LOGGER.info(e);
@@ -151,7 +145,7 @@ public class PersonDao implements IPersonDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return personModels;
     }
 
 

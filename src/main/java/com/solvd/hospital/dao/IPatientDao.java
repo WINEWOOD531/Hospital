@@ -12,5 +12,5 @@ public interface IPatientDao {
 
     void deletePatientById(PatientModel patientModel);
 
-    ArrayList<PatientModel> getPatientByAge(int age);
+    PatientModel getPatientById(int id);
 }

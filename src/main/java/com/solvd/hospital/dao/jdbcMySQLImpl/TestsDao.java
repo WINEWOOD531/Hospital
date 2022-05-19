@@ -17,7 +17,7 @@ public class TestsDao implements ITestsDao {
     private static final Logger LOGGER = LogManager.getLogger(TestsDao.class);
 
     final String deleteStatementS = "DELETE FROM Tests WHERE id=?";
-    final String getStatement = "SELECT * FROM Tests WHERE testName LIKE ? ESCAPE '!'";
+    final String getStatement = "SELECT * FROM Tests WHERE id=?";
     final String insertStatementS = "INSERT INTO Tests VALUES (?, ?)";
     final String updateStatementS = "UPDATE Tests SET testName=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM Tests";
@@ -39,7 +39,6 @@ public class TestsDao implements ITestsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,7 +60,6 @@ public class TestsDao implements ITestsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -82,7 +80,6 @@ public class TestsDao implements ITestsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -90,22 +87,18 @@ public class TestsDao implements ITestsDao {
     }
 
     @Override
-    public List<TestsModel> getTestsByName(String name) {
+    public TestsModel getTestsById(int id) {
+        TestsModel testsModel = new TestsModel();
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(getStatement);
-            statement.setString(1, name + "%");
+            statement.setInt(1, id);
             result = statement.executeQuery();
-            ArrayList<TestsModel> testsModels = new ArrayList<TestsModel>();
             while (result.next()) {
-                TestsModel testsModel = new TestsModel();
                 testsModel.setId(result.getInt("id"));
                 testsModel.setTestName(result.getString("testName"));
-                testsModels.add(testsModel);
                 testsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return testsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -117,15 +110,15 @@ public class TestsDao implements ITestsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return testsModel;
     }
 
     public List<TestsModel> getAllTests() {
+        ArrayList<TestsModel> testsModels = new ArrayList<TestsModel>();
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(GET_ALL);
             result = statement.executeQuery();
-            ArrayList<TestsModel> testsModels = new ArrayList<TestsModel>();
             while (result.next()) {
                 TestsModel testsModel = new TestsModel();
                 testsModel.setId(result.getInt("id"));
@@ -133,8 +126,6 @@ public class TestsDao implements ITestsDao {
                 testsModels.add(testsModel);
                 testsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return testsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -146,7 +137,7 @@ public class TestsDao implements ITestsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return testsModels;
     }
 
 }

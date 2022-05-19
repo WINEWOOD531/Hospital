@@ -12,6 +12,6 @@ public interface ITestsDao {
 
     void deleteTestsById(TestsModel testsModel);
 
-    List<TestsModel> getTestsByName(String name);
+    TestsModel getTestsById(int id);
 
 }

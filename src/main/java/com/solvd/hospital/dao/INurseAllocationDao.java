@@ -12,6 +12,6 @@ public interface INurseAllocationDao {
 
     void deleteNursesAllocationById(NurseAllocationModel nurseAllocationModel);
 
-    ArrayList<NurseAllocationModel> getNurseAllocationById(int id);
+    NurseAllocationModel getNurseAllocationById(int id);
 
 }

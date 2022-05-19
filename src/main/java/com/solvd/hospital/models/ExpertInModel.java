@@ -3,8 +3,8 @@ package com.solvd.hospital.models;
 public class ExpertInModel {
 
     private int id;
-    private int doctorsId;
-    private int specializationId;
+/*    private int doctorsId;
+    private int specializationId;*/
     private DoctorsModel doctors;
     private SpecializationModel specialization;
 
@@ -21,13 +21,13 @@ public class ExpertInModel {
         this.id = id;
     }
 
-    public void setDoctorsId(int doctorsId) {
+/*    public void setDoctorsId(int doctorsId) {
         this.doctorsId = doctorsId;
     }
 
     public void setSpecializationId(int specializationId) {
         this.specializationId = specializationId;
-    }
+    }*/
 
     public void setDoctors(DoctorsModel doctors) {
         this.doctors = doctors;
@@ -41,13 +41,13 @@ public class ExpertInModel {
         return id;
     }
 
-    public int getDoctorsId() {
+/*    public int getDoctorsId() {
         return doctorsId;
     }
 
     public int getSpecializationId() {
         return specializationId;
-    }
+    }*/
 
     public DoctorsModel getDoctors() {
         return doctors;
@@ -61,8 +61,6 @@ public class ExpertInModel {
     public String toString() {
         return "ExpertInModel{" +
                 "id=" + id +
-                ", doctorsId=" + doctorsId +
-                ", specializationId=" + specializationId +
                 ", doctors=" + doctors +
                 ", specialization=" + specialization +
                 '}';

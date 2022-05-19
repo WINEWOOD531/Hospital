@@ -2,6 +2,9 @@ package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.IAppointmentDao;
 import com.solvd.hospital.models.AppointmentModel;
+import com.solvd.hospital.models.DoctorsModel;
+import com.solvd.hospital.models.PatientModel;
+import com.solvd.hospital.models.PersonModel;
 import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +17,7 @@ public class AppointmentDao implements IAppointmentDao {
 
     private static final Logger LOGGER = LogManager.getLogger(AppointmentDao.class);
     final String deleteStatementS = "DELETE FROM appointment WHERE id=?";
-    final String getStatement = "SELECT * FROM appointment WHERE Doctors_id = ?";
+    final String getStatement = "SELECT * FROM appointment WHERE id=?";
     final String insertStatementS = "INSERT INTO appointment VALUES (?, ?, ?,?)";
     final String updateStatementS = "UPDATE appointment SET appointmentDate=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM appointment";
@@ -28,8 +31,8 @@ public class AppointmentDao implements IAppointmentDao {
             statement = dbConnect.prepareStatement(insertStatementS);
             statement.setInt(1, appointmentModel.getId());
             statement.setString(2, appointmentModel.getAppointmentDate());
-            statement.setInt(3, appointmentModel.getDoctors().getId());
-            statement.setInt(4, appointmentModel.getPatient().getId());
+            statement.setInt(3, appointmentModel.getDoctorsId());
+            statement.setInt(4, appointmentModel.getPatientId());
             int i = statement.executeUpdate();
             LOGGER.info(i + " records inserted");
         } catch (Exception e) {
@@ -38,7 +41,6 @@ public class AppointmentDao implements IAppointmentDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,7 +62,6 @@ public class AppointmentDao implements IAppointmentDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -69,9 +70,7 @@ public class AppointmentDao implements IAppointmentDao {
 
     @Override
     public void deleteAppointmentById(AppointmentModel appointmentModel) {
-
         Connection dbConnect = DataBaseConnection.getConnection();
-
         try {
             statement = dbConnect.prepareStatement(deleteStatementS);
             statement.setInt(1, appointmentModel.getId());
@@ -83,7 +82,6 @@ public class AppointmentDao implements IAppointmentDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -91,24 +89,26 @@ public class AppointmentDao implements IAppointmentDao {
     }
 
     @Override
-    public List<AppointmentModel> getAppointmentByDoctorId(int id) {
+    public AppointmentModel getAppointmentById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
+        AppointmentModel appointmentModel = new AppointmentModel();
+        DoctorsModel doctorsModel = new DoctorsModel();
+        PatientModel patientModel = new PatientModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
-            ArrayList<AppointmentModel> appointmentModels = new ArrayList<AppointmentModel>();
             while (result.next()) {
-                AppointmentModel appointmentModel = new AppointmentModel();
                 appointmentModel.setId(result.getInt(1));
                 appointmentModel.setAppointmentDate(result.getString(2));
-                appointmentModel.setDoctorsId(result.getInt(3));
-                appointmentModel.setPatientId(result.getInt(4));
-                appointmentModels.add(appointmentModel);
+                doctorsModel.setId(result.getInt("id"));
+                patientModel.setId(result.getInt("id"));
+                appointmentModel.setDoctors(doctorsModel);
+                appointmentModel.setPatient(patientModel);
+               /* appointmentModel.setDoctors(new DoctorsDao().getDoctorById(result.getInt(3)));
+                appointmentModel.setPatient(new PatientDao().getPatientById(result.getInt(4)));*/
                 appointmentModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return appointmentModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -120,26 +120,34 @@ public class AppointmentDao implements IAppointmentDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return appointmentModel;
     }
 
     public List<AppointmentModel> getAllAppointments() {
         Connection dbConnect = DataBaseConnection.getConnection();
+        ArrayList<AppointmentModel> appointmentModels = new ArrayList<AppointmentModel>();
+        DoctorsModel doctorsModel = new DoctorsModel();
+        PatientModel patientModel = new PatientModel();
         try {
             statement = dbConnect.prepareStatement(GET_ALL);
             result = statement.executeQuery();
-            ArrayList<AppointmentModel> appointmentModels = new ArrayList<AppointmentModel>();
             while (result.next()) {
                 AppointmentModel appointmentModel = new AppointmentModel();
                 appointmentModel.setId(result.getInt(1));
                 appointmentModel.setAppointmentDate(result.getString(2));
-                appointmentModel.setDoctorsId(result.getInt(3));
-                appointmentModel.setPatientId(result.getInt(4));
+/*                doctorsModel.setId(result.getInt("id"));
+                patientModel.setId(result.getInt("id"));
+                appointmentModel.setDoctors(doctorsModel);
+                appointmentModel.setPatient(patientModel);*/
+                DoctorsDao doctorsDao=new DoctorsDao();
+                //appointmentModel.setDoctors(new DoctorsDao().getDoctorById(result.getInt(3)));
+                appointmentModel.setDoctors(doctorsDao.getDoctorById(result.getInt(3)));
+                //appointmentModel.setPatient(new PatientDao().getPatientById(result.getInt(4)));
+                PatientDao patientDao= new PatientDao();
+                appointmentModel.setPatient(patientDao.getPatientById(result.getInt(4)));
                 appointmentModels.add(appointmentModel);
                 appointmentModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return appointmentModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -151,6 +159,6 @@ public class AppointmentDao implements IAppointmentDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return appointmentModels;
     }
 }

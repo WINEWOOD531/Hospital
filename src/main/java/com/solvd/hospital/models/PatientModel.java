@@ -18,15 +18,17 @@ public class PatientModel extends PersonModel {
     @XmlElement
     private String sex;
 
+    PersonModel personModel;
+
     public PatientModel() {
     }
 
-    public PatientModel(int id, int age, String bloodGroup, String sex,int personId) {
+    public PatientModel(int id, int age, String bloodGroup, String sex, PersonModel personModel) {
         this.id = id;
         this.age = age;
         this.bloodGroup = bloodGroup;
         this.sex = sex;
-        setId(personId);
+        this.personModel = personModel;
     }
 
     public void setId(int id) {
@@ -45,9 +47,9 @@ public class PatientModel extends PersonModel {
         this.sex = sex;
     }
 
-/*    public void setPerson(PersonModel person) {
-        this.person = person;
-    }*/
+    public void setPerson(PersonModel person) {
+        this.personModel = person;
+    }
 
     public int getId() {
         return id;
@@ -65,9 +67,9 @@ public class PatientModel extends PersonModel {
         return sex;
     }
 
-/*    public PersonModel getPerson() {
-        return person;
-    }*/
+    public PersonModel getPerson() {
+        return personModel;
+    }
 
     @Override
     public String toString() {
@@ -76,6 +78,7 @@ public class PatientModel extends PersonModel {
                 ", age=" + age +
                 ", bloodGroup='" + bloodGroup + '\'' +
                 ", sex='" + sex + '\'' +
+                ", personModel=" + personModel +
                 '}';
     }
 }

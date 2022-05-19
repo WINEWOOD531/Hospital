@@ -1,6 +1,8 @@
 package com.solvd.hospital.dao.jdbcMySQLImpl;
 
 import com.solvd.hospital.dao.ITakesDao;
+import com.solvd.hospital.models.MedicinesModel;
+import com.solvd.hospital.models.PatientModel;
 import com.solvd.hospital.models.TakesModel;
 import com.solvd.hospital.utility.connection.DataBaseConnection;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +16,7 @@ public class TakesDao implements ITakesDao {
 
     private static final Logger LOGGER = LogManager.getLogger(TakesDao.class);
     final String deleteStatementS = "DELETE FROM takes WHERE id=?";
-    final String getStatement = "SELECT * FROM takes WHERE Medicines_id = ?";
+    final String getStatement = "SELECT * FROM takes WHERE id=?";
     final String insertStatementS = "INSERT INTO takes VALUES (?, ?, ?,?,?)";
     final String updateStatementS = "UPDATE takes SET quantiti=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM takes";
@@ -39,7 +41,6 @@ public class TakesDao implements ITakesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,7 +62,6 @@ public class TakesDao implements ITakesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -82,7 +82,6 @@ public class TakesDao implements ITakesDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -90,25 +89,27 @@ public class TakesDao implements ITakesDao {
     }
 
     @Override
-    public ArrayList<TakesModel> getTakesByMedicineId(int id) {
+    public TakesModel getTakesById(int id) {
         ArrayList<TakesModel> takesModels = new ArrayList<>();
         Connection dbConnect = DataBaseConnection.getConnection();
+        PatientModel patient = new PatientModel();
+        TakesModel takesModel = new TakesModel();
+        MedicinesModel medicinesModel = new MedicinesModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                TakesModel takesModel = new TakesModel();
                 takesModel.setId(result.getInt(1));
                 takesModel.setQuantity(result.getDouble(2));
                 takesModel.setTakesDate(result.getString(3));
-                takesModel.setMedicinesId(result.getInt("Medicines_id"));
-                takesModel.setPatientId(result.getInt("Patient_id"));
+                medicinesModel.setId(result.getInt("id"));
+                patient.setId(result.getInt("id"));
+                takesModel.setMedicines(medicinesModel);
+                takesModel.setPatient(patient);
                 takesModels.add(takesModel);
                 takesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return takesModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -120,7 +121,7 @@ public class TakesDao implements ITakesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return takesModel;
     }
 
     public ArrayList<TakesModel> getAllTakes() {
@@ -134,12 +135,15 @@ public class TakesDao implements ITakesDao {
                 takesModel.setId(result.getInt(1));
                 takesModel.setQuantity(result.getDouble(2));
                 takesModel.setTakesDate(result.getString(3));
-                takesModel.setMedicinesId(result.getInt("Medicines_id"));
-                takesModel.setPatientId(result.getInt("Patient_id"));
+                /*takesModel.setMedicines(new MedicinesDao().getMedicinesById(result.getInt(4)));
+                takesModel.setPatient(new PatientDao().getPatientById(result.getInt(5)));*/
+                PatientDao patientDao = new PatientDao();
+                MedicinesDao medicinesDao = new MedicinesDao();
+                takesModel.setMedicines(medicinesDao.getMedicinesById(result.getInt(4)));
+                takesModel.setPatient(patientDao.getPatientById(result.getInt(5)));
                 takesModels.add(takesModel);
                 takesModel.toString();
             }
-            LOGGER.info("ALL is OK!");
             return takesModels;
         } catch (Exception e) {
             LOGGER.info(e);
@@ -152,6 +156,6 @@ public class TakesDao implements ITakesDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return takesModels;
     }
 }

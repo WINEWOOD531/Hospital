@@ -12,5 +12,5 @@ public interface INursesDao {
 
     void deleteNurseById(NursesModel nursesModel);
 
-    List<NursesModel> getNurseByIdWorkExperience(int workExperience);
+    NursesModel getNurseById(int id);
 }

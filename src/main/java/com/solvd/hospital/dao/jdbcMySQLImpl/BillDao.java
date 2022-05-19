@@ -17,7 +17,7 @@ public class BillDao implements IBillDao {
     private static final Logger LOGGER = LogManager.getLogger(BillDao.class);
 
     final String deleteStatementS = "DELETE FROM bill WHERE id=?";
-    final String getStatement = "SELECT * FROM bill WHERE Patient_id = ?";
+    final String getStatement = "SELECT * FROM bill WHERE id = ?";
     final String insertStatementS = "INSERT INTO bill VALUES (?, ?,?,?)";
     final String updateStatementS = "UPDATE bill SET summ=? WHERE id=?";
 
@@ -42,7 +42,6 @@ public class BillDao implements IBillDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -64,7 +63,6 @@ public class BillDao implements IBillDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -85,7 +83,6 @@ public class BillDao implements IBillDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -93,25 +90,22 @@ public class BillDao implements IBillDao {
     }
 
     @Override
-    public List<BillModel> getAllBillsByPatientId(int id) {
+    public BillModel getBillById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
         PatientModel patient = new PatientModel();
-        ArrayList<BillModel> billModels = new ArrayList<BillModel>();
+        BillModel billModel = new BillModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                BillModel billModel = new BillModel();
                 billModel.setId(result.getInt(1));
                 billModel.setSum(result.getDouble(2));
                 billModel.setPaymentDate(result.getString(3));
-                billModel.setPatientId(result.getInt(4));
-                billModels.add(billModel);
+                patient.setId(result.getInt(1));
+                billModel.setPatient(patient);
                 billModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return billModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -123,7 +117,7 @@ public class BillDao implements IBillDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return billModel;
     }
 
     public List<BillModel> getAllBills() {
@@ -138,12 +132,13 @@ public class BillDao implements IBillDao {
                 billModel.setId(result.getInt(1));
                 billModel.setSum(result.getDouble(2));
                 billModel.setPaymentDate(result.getString(3));
-                billModel.setPatientId(result.getInt(4));
+                PatientDao patientDao= new PatientDao();
+                billModel.setPatient(patientDao.getPatientById(result.getInt(4)));
+                //billModel.setPatient(new PatientDao().getPatientById(result.getInt(4)));
+                // billModel.setPatientId(result.getInt(4));
                 billModels.add(billModel);
                 billModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return billModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -155,6 +150,6 @@ public class BillDao implements IBillDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return billModels;
     }
 }

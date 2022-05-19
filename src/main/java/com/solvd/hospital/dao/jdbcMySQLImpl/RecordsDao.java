@@ -16,7 +16,7 @@ public class RecordsDao implements IRecordsDao {
 
     private static final Logger LOGGER = LogManager.getLogger(RecordsDao.class);
     final String deleteStatementS = "DELETE FROM records WHERE id=?";
-    final String getStatement = "SELECT * FROM records WHERE Patient_id = ?";
+    final String getStatement = "SELECT * FROM records WHERE id=?";
     final String insertStatementS = "INSERT INTO records VALUES (?, ?,?)";
     final String updateStatementS = "UPDATE records SET recordAnalysis=? WHERE id=?";
     private static final String GET_ALL = "SELECT * FROM records";
@@ -30,7 +30,7 @@ public class RecordsDao implements IRecordsDao {
     public void createRecords(RecordsModel recordsModel) {
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
-            PreparedStatement statement = dbConnect.prepareStatement(insertStatementS);
+            statement = dbConnect.prepareStatement(insertStatementS);
             statement.setInt(1, recordsModel.getId());
             statement.setString(2, recordsModel.getRecordAnalysis());
             statement.setInt(3, recordsModel.getPatient().getId());
@@ -42,7 +42,6 @@ public class RecordsDao implements IRecordsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -64,7 +63,6 @@ public class RecordsDao implements IRecordsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -85,7 +83,6 @@ public class RecordsDao implements IRecordsDao {
             try {
                 DataBaseConnection.close(dbConnect);
                 statement.close();
-                result.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -93,24 +90,21 @@ public class RecordsDao implements IRecordsDao {
     }
 
     @Override
-    public List<RecordsModel> getRecordsByPatientId(int id) {
-        ArrayList<RecordsModel> recordsModels = new ArrayList<RecordsModel>();
-        PatientModel patient = new PatientModel();
+    public RecordsModel getRecordById(int id) {
         Connection dbConnect = DataBaseConnection.getConnection();
+        PatientModel patient = new PatientModel();
+        RecordsModel recordsModel = new RecordsModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
             statement.setInt(1, id);
             result = statement.executeQuery();
             while (result.next()) {
-                RecordsModel recordsModel = new RecordsModel();
-                recordsModel.setId(result.getInt(1));
                 recordsModel.setRecordAnalysis(result.getString(2));
                 recordsModel.setRecordsId(result.getInt(3));
-                recordsModels.add(recordsModel);
+                patient.setId(result.getInt(1));
+                recordsModel.setPatient(patient);
                 recordsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return recordsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -122,7 +116,7 @@ public class RecordsDao implements IRecordsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return recordsModel;
     }
 
     public List<RecordsModel> getAllRecords() {
@@ -134,14 +128,15 @@ public class RecordsDao implements IRecordsDao {
             result = statement.executeQuery();
             while (result.next()) {
                 RecordsModel recordsModel = new RecordsModel();
-                recordsModel.setId(result.getInt(1));
+                //recordsModel.setId(result.getInt(1));
+               /* recordsModel.setPatient(new PatientDao().getPatientById(result.getInt("id")));*/
+                PatientDao patientDao= new PatientDao();
+                recordsModel.setPatient(patientDao.getPatientById(result.getInt(6)));
                 recordsModel.setRecordAnalysis(result.getString(2));
                 recordsModel.setRecordsId(result.getInt(3));
                 recordsModels.add(recordsModel);
                 recordsModel.toString();
             }
-            LOGGER.info("ALL is OK!");
-            return recordsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -153,7 +148,7 @@ public class RecordsDao implements IRecordsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return recordsModels;
     }
 
     public List<RecordsModel> getAllRecordsJoinPatient() {
@@ -164,16 +159,13 @@ public class RecordsDao implements IRecordsDao {
             result = statement.executeQuery();
             while (result.next()) {
                 RecordsModel recordsModel = new RecordsModel();
-                recordsModel.setId(result.getInt("id"));
+                recordsModel.setId(result.getInt("patient.id"));
                 recordsModel.setRecordAnalysis(result.getString("recordAnalysis"));
-                recordsModel.setRecordsId(result.getInt("patient.id"));
-                recordsModel.setAge(result.getInt("patient.age"));
-                recordsModel.setBloodGroup(result.getString("patient.bloodGroup"));
-                recordsModel.setSex(result.getString("patient.sex"));
+                recordsModel.setRecordsId(result.getInt("id"));
+                PatientDao patientDao= new PatientDao();
+                recordsModel.setPatient(patientDao.getPatientById(result.getInt("id")));
                 recordsModels.add(recordsModel);
             }
-            LOGGER.info("ALL is OK!");
-            return recordsModels;
         } catch (Exception e) {
             LOGGER.info(e);
         } finally {
@@ -185,6 +177,6 @@ public class RecordsDao implements IRecordsDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return recordsModels;
     }
 }

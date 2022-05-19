@@ -12,5 +12,5 @@ public interface IRecordsDao {
 
     void deleteRecordsById(RecordsModel recordsModel);
 
-    List<RecordsModel> getRecordsByPatientId(int id);
+    RecordsModel getRecordById(int id);
 }

@@ -12,5 +12,5 @@ public interface IExpertInDao {
 
     void deleteExpertInById(ExpertInModel expertInModel);
 
-    List<ExpertInModel> getAllExpertInBySpecializationId(int id);
+    ExpertInModel getExpertInById(int id);
 }

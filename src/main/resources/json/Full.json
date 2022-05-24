@@ -1,0 +1,7 @@
+{
+  "firstName" : "Petro",
+  "lastName" : "Vitrovui",
+  "phoneNumber" : "+380955550955",
+  "treatingDoctors" : [ "Ophthalmologist", "Dentist", "Neuropathologist" ],
+  "personId" : 10
+}

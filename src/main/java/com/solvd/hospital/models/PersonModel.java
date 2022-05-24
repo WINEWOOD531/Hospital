@@ -1,12 +1,15 @@
 package com.solvd.hospital.models;
 
 
+import java.util.List;
+
 public  class PersonModel {
 
     private int id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private List<String> treatingDoctors;
 
     public PersonModel() {
     }
@@ -16,6 +19,14 @@ public  class PersonModel {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public PersonModel(int id, String firstName, String lastName, String phoneNumber, List<String> treatingDoctors) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.treatingDoctors = treatingDoctors;
     }
 
     public void setPersonId(int id) {
@@ -34,6 +45,10 @@ public  class PersonModel {
         this.phoneNumber = phoneNumber;
     }
 
+    public void setTreatingDoctors(List<String> treatingDoctors) {
+        this.treatingDoctors = treatingDoctors;
+    }
+
     public int getPersonId() {
         return id;
     }
@@ -50,6 +65,20 @@ public  class PersonModel {
         return phoneNumber;
     }
 
+    public List<String> getTreatingDoctors() {
+        return treatingDoctors;
+    }
+
+/*    @Override
+    public String toString() {
+        return "PersonModel{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }*/
+
     @Override
     public String toString() {
         return "PersonModel{" +
@@ -57,6 +86,7 @@ public  class PersonModel {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", treatingDoctors=" + treatingDoctors +
                 '}';
     }
 }

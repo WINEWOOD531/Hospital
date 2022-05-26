@@ -3,7 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.dao.IPersonDao">
-
+    <resultMap id="person" type="com.solvd.hospital.models.PersonModel">
+        <id property="id" column="id"/>
+        <result property="firstName" column="firstName"/>
+        <result property="lastName" column="lastName"/>
+        <result property="phoneNumber" column="phoneNumber"/>
+    </resultMap>
     <insert id="createPerson" parameterType="com.solvd.hospital.models.PersonModel" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO person (id,firstName,lastName,phoneNumber)
@@ -20,7 +25,7 @@
         DELETE FROM person WHERE id = #{id}
     </delete>
 
-    <select id="getPersonById" resultType="com.solvd.hospital.models.PersonModel">
+    <select id="getPersonById" resultMap="person" resultType="com.solvd.hospital.models.PersonModel">
         SELECT * FROM person WHERE id =#{id};
     </select>
 </mapper>

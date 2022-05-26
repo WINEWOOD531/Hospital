@@ -35,7 +35,7 @@ public class Executor {
         //medicinesService.createMedicines(medicinesModelCreate);
         //medicinesService.updateMedicines(medicinesModelUpdate);
         //medicinesService.deleteMedicinesById(medicinesModelDelete);
-        //medicinesService.getMedicinesById(1);
+        medicinesService.getMedicinesById(1);
 
         PersonService personService=new PersonService();
         //personService.getPersonById(3);

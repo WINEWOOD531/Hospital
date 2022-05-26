@@ -3,18 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.solvd.hospital.dao.IMedicinesDao">
-    <insert id="createMedicines" parameterType="com.solvd.hospital.models.MedicinesModel" useGeneratedKeys="true"
+    <resultMap id="medicine" type="com.solvd.hospital.models.MedicinesModel">
+        <id property="id" column="id"/>
+        <result property="medicineName" column="medicineName"/>
+    </resultMap>
+    <insert id="createMedicines"  parameterType="com.solvd.hospital.models.MedicinesModel" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO Medicines (id,medicineName)
         VALUES (#{id},#{medicineName})
     </insert>
-    <update id="updateMedicines" parameterType="com.solvd.hospital.models.MedicinesModel">
+    <update id="updateMedicines"  parameterType="com.solvd.hospital.models.MedicinesModel">
         UPDATE Medicines SET medicineName = #{medicineName} WHERE id = #{id}
     </update>
-    <delete id="deleteMedicinesById" parameterType="com.solvd.hospital.models.MedicinesModel">
+    <delete id="deleteMedicinesById"  parameterType="com.solvd.hospital.models.MedicinesModel">
         DELETE FROM Medicines WHERE id = #{id}
     </delete>
-    <select id="getMedicinesById" resultType="com.solvd.hospital.models.MedicinesModel">
+    <select id="getMedicinesById" resultMap="medicine" resultType="com.solvd.hospital.models.MedicinesModel">
         SELECT * FROM Medicines WHERE id = #{id}
     </select>
 </mapper>

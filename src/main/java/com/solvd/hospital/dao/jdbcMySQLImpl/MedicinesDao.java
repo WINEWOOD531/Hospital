@@ -25,7 +25,7 @@ public class MedicinesDao implements IMedicinesDao {
 
     @Override
     public void createMedicines(MedicinesModel medicinesModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+       /* Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(insertStatementS);
             statement.setInt(1, medicinesModel.getId());
@@ -41,12 +41,12 @@ public class MedicinesDao implements IMedicinesDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void updateMedicines(MedicinesModel medicinesModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(updateStatementS);
             statement.setString(1, medicinesModel.getMedicineName());
@@ -62,12 +62,12 @@ public class MedicinesDao implements IMedicinesDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void deleteMedicinesById(MedicinesModel medicinesModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(deleteStatementS);
             statement.setInt(1, medicinesModel.getId());
@@ -82,12 +82,12 @@ public class MedicinesDao implements IMedicinesDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public MedicinesModel getMedicinesById(int id) {
-        Connection con = DataBaseConnection.getConnection();
+        /*Connection con = DataBaseConnection.getConnection();
         MedicinesModel medicinesModel = new MedicinesModel();
         try {
             statement = con.prepareStatement(getStatement);
@@ -109,7 +109,8 @@ public class MedicinesDao implements IMedicinesDao {
                 e.printStackTrace();
             }
         }
-        return medicinesModel;
+        return medicinesModel;*/
+        return  null;
     }
 
     public List<MedicinesModel> getAllMedicines() {

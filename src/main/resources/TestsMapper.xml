@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.hospital.dao.ITestsDao">
+    <insert id="createTests" parameterType="com.solvd.hospital.models.TestsModel" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO Tests (id,testName)
+        VALUES (#{id},#{testName})
+    </insert>
+    <update id="updateTests" parameterType = "com.solvd.hospital.models.TestsModel">
+        UPDATE Tests SET testName = #{testName} WHERE id = #{id}
+    </update>
+    <delete id="deleteTestsById" parameterType = "com.solvd.hospital.models.TestsModel">
+        DELETE FROM Tests WHERE id = #{id}
+    </delete>
+    <select id="getTestsById" resultType="com.solvd.hospital.models.TestsModel">
+        SELECT * FROM Tests WHERE id = #{id}
+    </select>
+</mapper>

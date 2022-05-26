@@ -1,6 +1,7 @@
 package com.solvd.hospital.dao;
 import com.solvd.hospital.models.PersonModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IPersonDao {

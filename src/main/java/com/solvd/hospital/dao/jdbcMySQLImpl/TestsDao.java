@@ -26,7 +26,7 @@ public class TestsDao implements ITestsDao {
 
     @Override
     public void createTests(TestsModel testsModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(insertStatementS);
             statement.setInt(1, testsModel.getId());
@@ -42,12 +42,12 @@ public class TestsDao implements ITestsDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void updateTests(TestsModel testsModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(updateStatementS);
             statement.setString(1, testsModel.getTestName());
@@ -63,12 +63,12 @@ public class TestsDao implements ITestsDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void deleteTestsById(TestsModel testsModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(deleteStatementS);
             statement.setInt(1, testsModel.getId());
@@ -83,12 +83,12 @@ public class TestsDao implements ITestsDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public TestsModel getTestsById(int id) {
-        TestsModel testsModel = new TestsModel();
+/*        TestsModel testsModel = new TestsModel();
         Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(getStatement);
@@ -110,7 +110,9 @@ public class TestsDao implements ITestsDao {
                 e.printStackTrace();
             }
         }
-        return testsModel;
+        return testsModel;*/
+
+        return  null;
     }
 
     public List<TestsModel> getAllTests() {

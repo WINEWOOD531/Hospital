@@ -32,7 +32,7 @@ public class JsonParser {
     private static final String filePathForRead = "src/main/resources/json/Full.json";
     private static final Logger LOGGER = LogManager.getLogger(JsonParser.class);
 
-    public static void writeToJson() throws IOException {
+    /*public static void writeToJson() throws IOException {
         PersonModel personModel = new PersonModel();
         personModel.setPersonId(10);
         personModel.setFirstName("Petro");
@@ -60,9 +60,9 @@ public class JsonParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public static void readFromJson() {
+    /*public static void readFromJson() {
         ObjectMapper mapper = new ObjectMapper();
         FileReader file = null;
         try {
@@ -88,6 +88,6 @@ public class JsonParser {
             }
         }
 
-    }
+    }*/
 
 }

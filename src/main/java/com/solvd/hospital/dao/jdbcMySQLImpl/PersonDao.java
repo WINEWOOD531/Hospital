@@ -4,9 +4,15 @@ import com.solvd.hospital.dao.IPersonDao;
 import com.solvd.hospital.models.PatientModel;
 import com.solvd.hospital.models.PersonModel;
 import com.solvd.hospital.utility.connection.DataBaseConnection;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +31,7 @@ public class PersonDao implements IPersonDao {
 
     @Override
     public void createPerson(PersonModel personModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(insertStatementS);
             statement.setInt(1, personModel.getPersonId());
@@ -43,12 +49,12 @@ public class PersonDao implements IPersonDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void updatePerson(PersonModel personModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(updateStatementS);
             statement.setString(1, personModel.getPhoneNumber());
@@ -64,12 +70,12 @@ public class PersonDao implements IPersonDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public void deletePersonById(PersonModel personModel) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+/*        Connection dbConnect = DataBaseConnection.getConnection();
         try {
             statement = dbConnect.prepareStatement(deleteStatementS);
             statement.setInt(1, personModel.getPersonId());
@@ -84,12 +90,12 @@ public class PersonDao implements IPersonDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override
     public PersonModel getPersonById(int id) {
-        Connection dbConnect = DataBaseConnection.getConnection();
+       /* Connection dbConnect = DataBaseConnection.getConnection();
         PersonModel personModel = new PersonModel();
         try {
             statement = dbConnect.prepareStatement(getStatement);
@@ -113,8 +119,11 @@ public class PersonDao implements IPersonDao {
                 e.printStackTrace();
             }
         }
-        return personModel;
+        return personModel;*/
+
+        return  null;
     }
+
 
     public ArrayList<PersonModel> getAllPersons() {
         ArrayList<PersonModel> personModels = new ArrayList<>();

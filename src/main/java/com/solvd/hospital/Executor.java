@@ -1,5 +1,8 @@
 package com.solvd.hospital;
 
+import com.solvd.hospital.dao.mybatisDao.MedicinesService;
+import com.solvd.hospital.dao.mybatisDao.PersonService;
+import com.solvd.hospital.dao.mybatisDao.TestsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,17 +34,17 @@ public class Executor {
         //MedicinesModel medicinesModelUpdate= new MedicinesModel(7,"Some test medicines name");
         /*MedicinesModel medicinesModelDelete=new MedicinesModel();
         medicinesModelDelete.setId(9);*/
-        MedicinesService medicinesService= new MedicinesService();
+        MedicinesService medicinesService = new MedicinesService();
         //medicinesService.createMedicines(medicinesModelCreate);
         //medicinesService.updateMedicines(medicinesModelUpdate);
         //medicinesService.deleteMedicinesById(medicinesModelDelete);
-        medicinesService.getMedicinesById(1);
+        //LOGGER.info(medicinesService.getMedicinesById(1));
 
-        PersonService personService=new PersonService();
-        //personService.getPersonById(3);
+        PersonService personService = new PersonService();
+        //LOGGER.info(personService.getPersonById(3));
 
-        TestsService testsService= new TestsService();
-        //testsService.getTestsById(5);
+        TestsService testsService = new TestsService();
+        //LOGGER.info(testsService.getTestsById(5));
     }
 
 

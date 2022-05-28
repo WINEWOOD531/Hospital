@@ -1,4 +1,4 @@
-package com.solvd.hospital;
+package com.solvd.hospital.dao.mybatisDao;
 
 import com.solvd.hospital.dao.IPersonDao;
 import com.solvd.hospital.models.PersonModel;
@@ -51,18 +51,12 @@ public class PersonService {
     }
 
     public PersonModel getPersonById(Integer id) throws IOException {
-        String resource = "mybatis_config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession session = sqlSessionFactory.openSession();
-        PersonModel personModel;
+        SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession();
         try {
-            IPersonDao iPersonDao = session.getMapper(IPersonDao.class);
-            personModel = iPersonDao.getPersonById(id);
-            LOGGER.info(personModel);
+            IPersonDao iPersonDao = sqlSession.getMapper(IPersonDao.class);
+            return iPersonDao.getPersonById(id);
         } finally {
-            session.close();
+            sqlSession.close();
         }
-        return personModel;
     }
 }

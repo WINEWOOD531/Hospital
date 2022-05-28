@@ -1,4 +1,4 @@
-package com.solvd.hospital;
+package com.solvd.hospital.dao.mybatisDao;
 
 import com.solvd.hospital.dao.IMedicinesDao;
 import com.solvd.hospital.models.MedicinesModel;
@@ -50,30 +50,17 @@ public class MedicinesService {
     }
 
     public MedicinesModel getMedicinesById(Integer id) throws IOException {
-/*        SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession();
+        SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession();
         try {
             IMedicinesDao iMedicinesDao = sqlSession.getMapper(IMedicinesDao.class);
             return iMedicinesDao.getMedicinesById(id);
         } finally {
             sqlSession.close();
-        }*/
-
-        String resource = "mybatis_config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-        SqlSession session = sqlSessionFactory.openSession();
-        MedicinesModel medicinesModel;
-        try {
-            IMedicinesDao iMedicinesDao = session.getMapper(IMedicinesDao.class);
-            medicinesModel = iMedicinesDao.getMedicinesById(id);
-            LOGGER.info(medicinesModel);
-        } finally {
-            session.close();
         }
-        return medicinesModel;
     }
 }
+
+
 
 
 

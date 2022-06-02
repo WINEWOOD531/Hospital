@@ -29,6 +29,6 @@ public class MyObserver {
     }
 
     void update() {
-        LOGGER.error(name + " Change status: " + state);
+        LOGGER.info(name + " Change status: " + state);
     }
 }
